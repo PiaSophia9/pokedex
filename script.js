@@ -99,13 +99,8 @@ async function loadStats(i) {
   let response = await fetch(url);
   let pokemon = await response.json();
   let pokemonStats = pokemon["stats"];
-  // let statName = pokemonStats["0"]["stat"]["name"];
-  // let statValue = pokemonStats["0"]["base_stat"];
-
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
-
-  // console.log("statName: ", statName, "and statValue: ", statValue);
 }
 
 function loadStatsNames(pokemonStats) {
