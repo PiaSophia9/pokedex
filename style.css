@@ -4,7 +4,7 @@ body {
 }
 #cardTopContainer {
   min-height: 50vh;
-  background-color: #fb6c6c;
+
   color: white;
   display: flex;
   flex-direction: column;
@@ -95,13 +95,26 @@ p {
   color: white;
   padding: 16px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
-.category_and_image {
+/* .category_and_image {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
+
+.container_name_and_category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #miniCardImage {
-  height: 40px;
-  width: auto;
+  height: 160px;
+  width: 160px;
+  object-fit: cover;
 }
