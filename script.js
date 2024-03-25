@@ -2,7 +2,7 @@
 
 let pokemonNames = []; // brauch ich nicht
 // let namePokemon;
-let currentPokemon;
+let currentPokemon; // dort ist das letze Pokemon gespeichert, was in den Mini-Cards angezeigt ist.
 let statNames = [];
 let statValues = [];
 
@@ -26,6 +26,7 @@ async function loadPokemons() {
     let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`; // hier kann ich pokemonNames einsetzen.
     let response = await fetch(url);
     currentPokemon = await response.json(); // you get object of the pokemon.
+    console.log("CurrentPokemon: ", currentPokemon);
     // load the name (string) from the right array and save it in variabel
     let currentPokemonName = await currentPokemon["name"];
     // load the category (string) from the right array and save it in variabel
@@ -80,8 +81,11 @@ function showCard(i, backgroundColor, currentPokemonName, currentPokemonCategory
   // das popup muss gerendert werden. Wenn es noch nicht da ist, ist auch noch keine id da bei der d_none removed werden kann.
   document.getElementById("popup").classList.remove("d_none");
   // loadPokemon();
+
   renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
   // renderPopup();
+  loadStats();
+  renderChart();
 }
 
 function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
@@ -97,14 +101,6 @@ function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCateg
     </div>
   </div>
 </div>`;
-
-  // setBackgroundColor(backgroundColor);
-  // //   loadPokemon(namePokemon);
-  // renderPokemonName(currentPokemonName);
-  // renderPokemonImage(currentPokemonImageSrc);
-  // renderPokemonCategory(currentPokemonCategory);
-  // renderStats(i); // Todo: Umbennen - hier wird nur gepusht.
-  // renderChart();
 }
 
 // function setBackgroundColor(backgroundColor) {
@@ -137,27 +133,27 @@ function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCateg
 //   document.getElementById("pokemoncategory").innerHTML = currentPokemon["types"]["0"]["type"]["name"];
 // }
 
-function renderStats() {
-  renderStatsNames();
-  renderStatsValue();
+function loadStats() {
+  loadStatsNames();
+  loadStatsValue();
 }
 
-function renderStatsNames() {
-  let currentPokemonStats = currentPokemon["stats"];
+function loadStatsNames() {
+  let currentPokemonStats = currentPokemon["stats"]; //
   for (let i = 0; i < currentPokemonStats.length; i++) {
     const statName = currentPokemonStats[i]["stat"]["name"];
     statNames.push(statName);
   }
-  console.log(statNames);
+  console.log("statName", statNames);
 }
 
-function renderStatsValue() {
+function loadStatsValue() {
   let currentPokemonStats = currentPokemon["stats"];
   for (let i = 0; i < currentPokemonStats.length; i++) {
     const statValue = currentPokemonStats[i]["base_stat"];
     statValues.push(statValue);
   }
-  console.log(statValues);
+  console.log("stat value: ", statValues);
 }
 
 // function renderMiniCards() {
