@@ -1,25 +1,30 @@
 // Main
 
 let pokemonNames = [];
-let currentPokemon; // Am Schluss ist dort ist das letze Pokemon gespeichert, was in den Mini-Cards angezeigt ist.
+let currentPokemon;
 let statNames = [];
 let statValues = [];
 
-async function loadPokemons() {
-  let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon/";
-  let responseAllPokemon = await fetch(urlAllPokemon);
-  let nameAndUrlOf20Pokemon = await responseAllPokemon.json();
-  console.log("All Pokemons:", nameAndUrlOf20Pokemon);
-  let infoAllpokemons = nameAndUrlOf20Pokemon["results"];
-  console.log("Index, names and url of all Pokemon:", infoAllpokemons);
+async function fetchAndDisplayMiniCards() {
+  let info = await load20PokemonInfos();
+  load20PokemonNames(info);
+}
+
+async function load20PokemonInfos() {
+  let url20Pokemon = "https://pokeapi.co/api/v2/pokemon/";
+  let nameAndUrlOf20Pokemon = await fetch(url20Pokemon);
+  let nameAndUrlOf20PokemonJson = await nameAndUrlOf20Pokemon.json();
+  let infoAllpokemons = nameAndUrlOf20PokemonJson["results"];
+  return infoAllpokemons;
+}
+
+async function load20PokemonNames(infoAllpokemons) {
   for (let i = 0; i < infoAllpokemons.length; i++) {
     let namePokemon = infoAllpokemons[i]["name"];
-    console.log("Name Pokemon ", i, ":", namePokemon);
     pokemonNames.push(namePokemon);
     await loadPokemonInfo(namePokemon);
     renderMiniCard(i);
   }
-  console.log("Names saved in the array pokemonNames: ", pokemonNames);
 }
 
 function renderMiniCard(i) {
@@ -29,8 +34,6 @@ function renderMiniCard(i) {
   let backgroundColor = getBackgroundColor(currentPokemonCategory);
   document.getElementById("mainContainer").innerHTML += generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
 }
-
-function loadPokemonNames() {}
 
 async function loadPokemonInfo(namePokemon) {
   let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
@@ -64,11 +67,6 @@ function getBackgroundColor(currentPokemonCategory) {
 }
 
 // Popup
-
-// Click auf die Karte
-// In der onlclick-Funktion muss úbergeben werden, um welche Karte es sich handelt (index) und wie der Name des Pokemon ist, damit man die URL anpassen kann, die die Informationen beinhaltet nach der das Popup mit Daten gefüllt werden kann.
-// Das Popup muss erstellt werden mit allen Infos.
-// Dem popup muss muss das d_none entfernt werden.
 
 function showPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
   document.getElementById("popupBackground").classList.remove("d_none");
@@ -121,7 +119,6 @@ function loadStatsValue() {
 
 function closePopup() {
   document.getElementById("popupBackground").classList.add("d_none");
-  // event.stopPropagation(onclick); //ToDo Make it work! Only a click on the background should close popup.
   enableScroll();
 }
 
