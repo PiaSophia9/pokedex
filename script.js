@@ -1,29 +1,23 @@
 // Main
 
-let pokemonNames = []; // brauch ich nicht
-// let namePokemon;
-let currentPokemon; // dort ist das letze Pokemon gespeichert, was in den Mini-Cards angezeigt ist.
+let pokemonNames = [];
+let currentPokemon; // Am Schluss ist dort ist das letze Pokemon gespeichert, was in den Mini-Cards angezeigt ist.
 let statNames = [];
 let statValues = [];
 
 async function loadPokemons() {
-  let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon/"; // Leider kann man hier nicht die Kategorie und auch nicht das Bild laden. Vltt kann man diese URL verwenden, um den Namen, der hier ausgespuckt wird, in einer anderen Funktion nutzen, die dann auf die einzelnen Pokemon zugreift. Die Namen kann ich oben in Zeile 6 eingeben. Oder doch einfach ein array mit den namen machen?
+  let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon/";
   let responseAllPokemon = await fetch(urlAllPokemon);
   let allPokemon = await responseAllPokemon.json();
   console.log("All Pokemons:", allPokemon);
   let infoAllpokemons = allPokemon["results"];
   console.log("Index, names and url of all Pokemon:", infoAllpokemons);
-
-  // let namePokemon = infoAllpokemons[i]["name"];
-  // console.log("Name Pokemon:", namePokemon);
-
   for (let i = 0; i < infoAllpokemons.length; i++) {
     let namePokemon = infoAllpokemons[i]["name"];
     console.log("Name Pokemon ", i, ":", namePokemon);
     pokemonNames.push(namePokemon);
-
     // load info of pokemon with the help of the name.
-    let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`; // hier kann ich pokemonNames einsetzen.
+    let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
     let response = await fetch(url);
     currentPokemon = await response.json(); // you get object of the pokemon.
     console.log("CurrentPokemon: ", currentPokemon);
@@ -31,17 +25,12 @@ async function loadPokemons() {
     let currentPokemonName = await currentPokemon["name"];
     // load the category (string) from the right array and save it in variabel
     let currentPokemonCategory = await currentPokemon["types"]["0"]["type"]["name"];
-    // load the stats (object) and save it in variabel - NOT neccessary: The stats are saved in a global variable.
     // load the image-src (string) from the right array and save it in variabel
     let currentPokemonImageSrc = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
-    // right backround-color
+    // set right backround-color:
     let backgroundColor = getBackgroundColor(currentPokemonCategory); // I put in the category, I receive via return the backround-color
-
-    // for (let k = 0; k < pokemonNames.length; k++) {
-    //   namePokemon = pokemonNames[k]["name"];
-
     document.getElementById("mainContainer").innerHTML += `
-     <div id='miniCard${i}' onclick="showCard(${i}, '${backgroundColor}', '${currentPokemonName}', '${currentPokemonCategory}', '${currentPokemonImageSrc}')" class="mini_card" style="background-color: ${backgroundColor};">
+     <div id='miniCard${i}' onclick="showPopup(${i}, '${backgroundColor}', '${currentPokemonName}', '${currentPokemonCategory}', '${currentPokemonImageSrc}')" class="mini_card" style="background-color: ${backgroundColor};">
      <div class="container_name_and_category">
      <h3 id="miniCardName">${currentPokemonName}</h3>
      
@@ -76,14 +65,9 @@ function getBackgroundColor(currentPokemonCategory) {
 // Das Popup muss erstellt werden mit allen Infos.
 // Dem popup muss muss das d_none entfernt werden.
 
-function showCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
-  // function showCard(param, namePokemon) {
-  // das popup muss gerendert werden. Wenn es noch nicht da ist, ist auch noch keine id da bei der d_none removed werden kann.
+function showPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
   document.getElementById("popup").classList.remove("d_none");
-  // loadPokemon();
-
   renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
-  // renderPopup();
   loadStats();
   renderChart();
 }
@@ -102,36 +86,6 @@ function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCateg
   </div>
 </div>`;
 }
-
-// function setBackgroundColor(backgroundColor) {
-
-// }
-
-// async function loadPokemon(namePokemon) {
-//   let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`; // hier kann ich pokemonNames einsetzen.
-//   let response = await fetch(url);
-//   currentPokemon = await response.json();
-
-//   console.log("Loaded Pokemon", currentPokemon);
-
-//   //   loadPokemons(); // gehört noch zu Main
-// }
-
-// function renderPokemonName() {
-//   document.getElementById("pokemonName").innerHTML = namePokemon;
-//   // Todo: Nochmal so versuchen!
-//   //   let name = await currentPokemon["name"];
-//   //   let nameWithCapitalLetter = toUpperCase(name);
-//   //   document.getElementById("pokemonName").innerHTML = nameWithCapitalLetter;
-// }
-
-// function renderPokemonImage() {
-//   document.getElementById("pokemonImage").src = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
-// }
-
-// function renderPokemonCategory() {
-//   document.getElementById("pokemoncategory").innerHTML = currentPokemon["types"]["0"]["type"]["name"];
-// }
 
 function loadStats() {
   loadStatsNames();
@@ -155,18 +109,3 @@ function loadStatsValue() {
   }
   console.log("stat value: ", statValues);
 }
-
-// function renderMiniCards() {
-//    for (let j = 0; j < pokemonNames.length; j++) {
-//     const pokemon = pokemonNames[j];
-
-//    }
-
-//    <div class="mini_card">
-//         <h3 id="miniCardName">Name</h3>
-//         <div class="category_and_image">
-//           <p id="miniCardCategory">Kategorie</p>
-//           <img id="miniCardImage" src="img1.jpg" />
-//         </div>
-//       </div>
-// }
