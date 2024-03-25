@@ -55,7 +55,7 @@ p {
 .card {
   height: 800px;
   width: 500px;
-  z-index: 500;
+  /* z-index: 500; */
 }
 
 .card_background {
@@ -129,14 +129,14 @@ p {
   position: absolute;
   top: 50%;
   left: 10%;
-  z-index: 999;
+  /* z-index: 999; */
 }
 
 .forewards_arrow {
   position: absolute;
   top: 50%;
   right: 10%;
-  z-index: 999;
+  /* z-index: 999; */
 }
 
 .backwards_arrow:hover,

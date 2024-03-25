@@ -16,32 +16,30 @@ async function loadPokemons() {
     let namePokemon = infoAllpokemons[i]["name"];
     console.log("Name Pokemon ", i, ":", namePokemon);
     pokemonNames.push(namePokemon);
-    // load info of pokemon with the help of the name.
     let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
     let response = await fetch(url);
-    currentPokemon = await response.json(); // you get object of the pokemon.
-    // console.log("CurrentPokemon: ", currentPokemon);
-    // load the name (string) from the right array and save it in variabel
+    currentPokemon = await response.json();
     let currentPokemonName = await currentPokemon["name"];
-    // load the category (string) from the right array and save it in variabel
     let currentPokemonCategory = await currentPokemon["types"]["0"]["type"]["name"];
-    // load the image-src (string) from the right array and save it in variabel
     let currentPokemonImageSrc = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
-    // set right backround-color:
-    let backgroundColor = getBackgroundColor(currentPokemonCategory); // I put in the category, I receive via return the backround-color
-    document.getElementById("mainContainer").innerHTML += `
-     <div id='miniCard${i}' onclick="showPopup(${i}, '${backgroundColor}', '${currentPokemonName}', '${currentPokemonCategory}', '${currentPokemonImageSrc}')" class="mini_card" style="background-color: ${backgroundColor};">
-     <div class="container_name_and_category">
-     <h3 id="miniCardName">${currentPokemonName}</h3>
-     
-       <p id="miniCardCategory">${currentPokemonCategory}</p>
-       </div>
-       <img id="miniCardImage" src="${currentPokemonImageSrc}" />
-     
-   </div>`;
+    let backgroundColor = getBackgroundColor(currentPokemonCategory);
+    document.getElementById("mainContainer").innerHTML += generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
     // }
   }
   console.log("Names saved in the array pokemonNames: ", pokemonNames);
+}
+
+function loadPokemonNames() {}
+
+function generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
+  return `
+  <div id='miniCard${i}' onclick="showPopup(${i}, '${backgroundColor}', '${currentPokemonName}', '${currentPokemonCategory}', '${currentPokemonImageSrc}')" class="mini_card" style="background-color: ${backgroundColor};">
+     <div class="container_name_and_category">
+     <h3 id="miniCardName">${currentPokemonName}</h3>
+       <p id="miniCardCategory">${currentPokemonCategory}</p>
+       </div>
+       <img id="miniCardImage" src="${currentPokemonImageSrc}" />
+   </div>`;
 }
 
 function getBackgroundColor(currentPokemonCategory) {
@@ -75,7 +73,7 @@ function showPopup(i, backgroundColor, currentPokemonName, currentPokemonCategor
 }
 
 function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
-  document.getElementById("popupBackground").innerHTML = `<div class="card">
+  document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
   <div id="cardTopContainer" style="background-color: ${backgroundColor};">
     <img onclick="showPreviousPokemon()" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
     <img onclick="showNextPokemon(${i})" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
@@ -116,7 +114,7 @@ function loadStatsValue() {
 
 function closePopup() {
   document.getElementById("popupBackground").classList.add("d_none");
-  event.stopPropagation(onclick); //ToDo Make it work! Only a click on the background should close popup.
+  // event.stopPropagation(onclick); //ToDo Make it work! Only a click on the background should close popup.
   enableScroll();
 }
 
@@ -135,5 +133,9 @@ function showPreviousPokemon() {
 function showNextPokemon(i) {
   console.log("current name: ", pokemonNames[i]);
   console.log("next name: ", pokemonNames[i + 1]);
+  event.stopPropagation(onclick);
+}
+
+function clickOnPopupCard() {
   event.stopPropagation(onclick);
 }
