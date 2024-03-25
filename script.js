@@ -20,7 +20,7 @@ async function loadPokemons() {
     let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
     let response = await fetch(url);
     currentPokemon = await response.json(); // you get object of the pokemon.
-    console.log("CurrentPokemon: ", currentPokemon);
+    // console.log("CurrentPokemon: ", currentPokemon);
     // load the name (string) from the right array and save it in variabel
     let currentPokemonName = await currentPokemon["name"];
     // load the category (string) from the right array and save it in variabel
@@ -68,13 +68,17 @@ function getBackgroundColor(currentPokemonCategory) {
 function showPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
   document.getElementById("popupBackground").classList.remove("d_none");
   renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
+  console.log("Pokemon in Popup: ", currentPokemon);
   loadStats();
   renderChart();
+  disableScroll();
 }
 
 function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
   document.getElementById("popupBackground").innerHTML = `<div class="card">
   <div id="cardTopContainer" style="background-color: ${backgroundColor};">
+    <img onclick="showPreviousPokemon()" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
+    <img onclick="showNextPokemon(${i})" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
     <h1 id="pokemonName">${currentPokemonName}</h1>
     <div class="pokemon_category_container"><h2 id="pokemoncategory">${currentPokemonCategory}</h2></div>
     <img id="pokemonImage" src="${currentPokemonImageSrc}"/>
@@ -111,5 +115,24 @@ function loadStatsValue() {
 }
 
 function closePopup() {
+  document.getElementById("popupBackground").classList.add("d_none");
   event.stopPropagation(onclick);
+  enableScroll();
+}
+
+function disableScroll() {
+  document.body.classList.add("remove-scrolling");
+}
+
+function enableScroll() {
+  document.body.classList.remove("remove-scrolling");
+}
+
+// showPreviousPokemon() {
+
+// }
+
+function showNextPokemon(i) {
+  console.log("current name: ", pokemonNames[i]);
+  console.log("next name: ", pokemonNames[i + 1]);
 }

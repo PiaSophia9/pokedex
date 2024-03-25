@@ -118,3 +118,27 @@ p {
   width: 160px;
   object-fit: cover;
 }
+
+.remove-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
+.backwards_arrow {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+}
+
+.forewards_arrow {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+}
+
+.backwards_arrow:hover,
+.forewards_arrow:hover {
+  transform: scale(1.5);
+  transition-duration: 225ms;
+  transition-timing-function: ease-in-out;
+}
