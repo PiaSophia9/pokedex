@@ -8,28 +8,35 @@ let statValues = [];
 async function loadPokemons() {
   let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon/";
   let responseAllPokemon = await fetch(urlAllPokemon);
-  let allPokemon = await responseAllPokemon.json();
-  console.log("All Pokemons:", allPokemon);
-  let infoAllpokemons = allPokemon["results"];
+  let nameAndUrlOf20Pokemon = await responseAllPokemon.json();
+  console.log("All Pokemons:", nameAndUrlOf20Pokemon);
+  let infoAllpokemons = nameAndUrlOf20Pokemon["results"];
   console.log("Index, names and url of all Pokemon:", infoAllpokemons);
   for (let i = 0; i < infoAllpokemons.length; i++) {
     let namePokemon = infoAllpokemons[i]["name"];
     console.log("Name Pokemon ", i, ":", namePokemon);
     pokemonNames.push(namePokemon);
-    let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
-    let response = await fetch(url);
-    currentPokemon = await response.json();
-    let currentPokemonName = await currentPokemon["name"];
-    let currentPokemonCategory = await currentPokemon["types"]["0"]["type"]["name"];
-    let currentPokemonImageSrc = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
-    let backgroundColor = getBackgroundColor(currentPokemonCategory);
-    document.getElementById("mainContainer").innerHTML += generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
-    // }
+    await loadPokemonInfo(namePokemon);
+    renderMiniCard(i);
   }
   console.log("Names saved in the array pokemonNames: ", pokemonNames);
 }
 
+function renderMiniCard(i) {
+  let currentPokemonName = currentPokemon["name"];
+  let currentPokemonCategory = currentPokemon["types"]["0"]["type"]["name"];
+  let currentPokemonImageSrc = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
+  let backgroundColor = getBackgroundColor(currentPokemonCategory);
+  document.getElementById("mainContainer").innerHTML += generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
+}
+
 function loadPokemonNames() {}
+
+async function loadPokemonInfo(namePokemon) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
+  let response = await fetch(url);
+  currentPokemon = await response.json();
+}
 
 function generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
   return `
