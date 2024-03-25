@@ -66,14 +66,14 @@ function getBackgroundColor(currentPokemonCategory) {
 // Dem popup muss muss das d_none entfernt werden.
 
 function showPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
-  document.getElementById("popup").classList.remove("d_none");
+  document.getElementById("popupBackground").classList.remove("d_none");
   renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
   loadStats();
   renderChart();
 }
 
 function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
-  document.getElementById("popup").innerHTML = `<div class="card">
+  document.getElementById("popupBackground").innerHTML = `<div class="card">
   <div id="cardTopContainer" style="background-color: ${backgroundColor};">
     <h1 id="pokemonName">${currentPokemonName}</h1>
     <div class="pokemon_category_container"><h2 id="pokemoncategory">${currentPokemonCategory}</h2></div>
@@ -108,4 +108,8 @@ function loadStatsValue() {
     statValues.push(statValue);
   }
   console.log("stat value: ", statValues);
+}
+
+function closePopup() {
+  event.stopPropagation(onclick);
 }
