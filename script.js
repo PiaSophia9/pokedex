@@ -116,7 +116,7 @@ function loadStatsValue() {
 
 function closePopup() {
   document.getElementById("popupBackground").classList.add("d_none");
-  event.stopPropagation(onclick);
+  event.stopPropagation(onclick); //ToDo Make it work! Only a click on the background should close popup.
   enableScroll();
 }
 
@@ -128,11 +128,12 @@ function enableScroll() {
   document.body.classList.remove("remove-scrolling");
 }
 
-// showPreviousPokemon() {
-
-// }
+function showPreviousPokemon() {
+  event.stopPropagation(onclick);
+}
 
 function showNextPokemon(i) {
   console.log("current name: ", pokemonNames[i]);
   console.log("next name: ", pokemonNames[i + 1]);
+  event.stopPropagation(onclick);
 }
