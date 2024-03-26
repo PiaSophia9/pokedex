@@ -7,7 +7,8 @@ let statValues = [];
 
 async function fetchAndDisplayMiniCards() {
   let info = await load20PokemonInfos();
-  load20PokemonNames(info);
+  load20PokemonNamesAndPushIntoArray(info);
+  await loadInfoOfAllPokemonAndRenderMiniCard();
 }
 
 async function load20PokemonInfos() {
@@ -18,27 +19,33 @@ async function load20PokemonInfos() {
   return infoAllpokemons;
 }
 
-async function load20PokemonNames(infoAllpokemons) {
+async function load20PokemonNamesAndPushIntoArray(infoAllpokemons) {
   for (let i = 0; i < infoAllpokemons.length; i++) {
     let namePokemon = infoAllpokemons[i]["name"];
     pokemonNames.push(namePokemon);
-    await loadPokemonInfo(namePokemon);
-    renderMiniCard(i, name);
   }
 }
 
-function renderMiniCard(i, name) {
+async function loadInfoOfAllPokemonAndRenderMiniCard() {
+  for (let i = 0; i < pokemonNames.length; i++) {
+    await loadInfoOf1Pokemon(i);
+    renderMiniCard(i);
+  }
+}
+
+async function loadInfoOf1Pokemon(i) {
+  const pokemonName = pokemonNames[i];
+  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNames[i]}`;
+  let response = await fetch(url);
+  currentPokemon = await response.json();
+}
+
+function renderMiniCard(i) {
   let currentPokemonName = currentPokemon["name"];
   let currentPokemonCategory = currentPokemon["types"]["0"]["type"]["name"];
   let currentPokemonImageSrc = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
   let backgroundColor = getBackgroundColor(currentPokemonCategory);
   document.getElementById("mainContainer").innerHTML += generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
-}
-
-async function loadPokemonInfo(namePokemon) {
-  let url = `https://pokeapi.co/api/v2/pokemon/${namePokemon}`;
-  let response = await fetch(url);
-  currentPokemon = await response.json();
 }
 
 function generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
@@ -141,8 +148,8 @@ function showPreviousPokemon() {
 }
 
 function showNextPokemon(i) {
-  console.log("current name: ", pokemonNames[i]);
-  console.log("next name: ", pokemonNames[i + 1]);
+  console.log("j = ", j);
+  showPopup(j);
   event.stopPropagation(onclick);
 }
 
