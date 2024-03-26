@@ -225,7 +225,13 @@ function renderTheLast20PokemonOfArray() {
 async function loadInfoOf20PokemonAndRenderMiniCard() {
   let last20Elemts = pokemonNames.slice(-20);
   for (let i = 0; i < last20Elemts.length; i++) {
-    await loadInfoOf1Pokemon(i);
+    await loadInfoOf1PokemonofLast20(i, last20Elemts);
     renderMiniCard(i);
   }
+}
+
+async function loadInfoOf1PokemonofLast20(i, last20) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${last20[i]}`;
+  let response = await fetch(url);
+  currentPokemon = await response.json();
 }
