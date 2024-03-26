@@ -1,3 +1,34 @@
+// search
+
+let allpokemonNames = [];
+
+async function fetchAllPokemonNames() {
+  let info = await loadAllPokemonInfos();
+  pushAllPokemonNamesIntoArray(info);
+  console.log("all Pokemon names: ", allpokemonNames);
+}
+
+async function loadAllPokemonInfos() {
+  let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+  let nameAndUrlOfAllPokemon = await fetch(urlAllPokemon);
+  let nameAndUrlOfAllPokemonJson = await nameAndUrlOfAllPokemon.json();
+  let infoAllpokemons = nameAndUrlOfAllPokemonJson["results"];
+  return infoAllpokemons;
+}
+
+async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
+  for (let i = 0; i < infoAllpokemons.length; i++) {
+    let namePokemonOfAll = infoAllpokemons[i]["name"];
+    allpokemonNames.push(namePokemonOfAll);
+  }
+}
+
+function filterNames() {
+  let search = document.getElementById("search").value;
+  search = search.toLowerCase();
+  console.log(search);
+}
+
 // Mini-Cards
 
 let pokemonNames = [];
@@ -10,6 +41,7 @@ async function fetchAndDisplayMiniCards() {
   let info = await load20PokemonInfos();
   pushFirst20PokemonNamesIntoArray(info);
   await loadInfoOfAllPokemonAndRenderMiniCard();
+  fetchAllPokemonNames();
 }
 
 async function load20PokemonInfos() {

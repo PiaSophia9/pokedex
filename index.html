@@ -11,7 +11,11 @@
   </head>
 
   <body onload="fetchAndDisplayMiniCards()">
-    <h1>Pokedex</h1>
+    <header>
+      <h1>Pokedex</h1>
+      <input id="search" onkeydown="filterNames()" type="text" placeholder="Search.." />
+    </header>
+
     <div id="mainContainer"></div>
     <button onclick="loadAndPush20MorePokemon()">Lade mehr</button>
     <div id="popupBackground" onclick="closePopup()" class="card_background d_none"></div>
