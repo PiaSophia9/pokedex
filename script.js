@@ -7,7 +7,7 @@ let statValues = [];
 
 async function fetchAndDisplayMiniCards() {
   let info = await load20PokemonInfos();
-  load20PokemonNamesAndPushIntoArray(info);
+  pushFirst20PokemonNamesIntoArray(info);
   await loadInfoOfAllPokemonAndRenderMiniCard();
 }
 
@@ -19,7 +19,7 @@ async function load20PokemonInfos() {
   return infoAllpokemons;
 }
 
-async function load20PokemonNamesAndPushIntoArray(infoAllpokemons) {
+async function pushFirst20PokemonNamesIntoArray(infoAllpokemons) {
   for (let i = 0; i < infoAllpokemons.length; i++) {
     let namePokemon = infoAllpokemons[i]["name"];
     pokemonNames.push(namePokemon);
@@ -192,11 +192,25 @@ function clickOnPopupCard() {
   event.stopPropagation(onclick);
 }
 
+async function loadAndPush20MorePokemon() {
+  let nameAndUrlOf20MorePokemonJson = await load20MorePokemonNames();
+  await push20MorePokemonNamesIntoArray(nameAndUrlOf20MorePokemonJson);
+}
+
 async function load20MorePokemonNames() {
   let url20MorePokemon = "https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20";
   let nameAndUrlOf20MorePokemon = await fetch(url20MorePokemon);
   let nameAndUrlOf20MorePokemonJson = await nameAndUrlOf20MorePokemon.json();
-  let nameOf20MorePokemon = nameAndUrlOf20MorePokemonJson["results"][0]["name"];
-  console.log("20 more Pokemon:", nameOf20MorePokemon);
-  return nameOf20MorePokemon;
+  let infoOf20MorePokemons = nameAndUrlOf20MorePokemonJson["results"];
+
+  console.log("20 more Pokemon:", infoOf20MorePokemons);
+  return infoOf20MorePokemons;
+}
+
+async function push20MorePokemonNamesIntoArray(infoOf20MorePokemons) {
+  for (let i = 0; i < infoOf20MorePokemons.length; i++) {
+    let nameNextPokemon = infoOf20MorePokemons[i]["name"];
+    pokemonNames.push(nameNextPokemon);
+  }
+  console.log("array pokemonNames: ", pokemonNames);
 }
