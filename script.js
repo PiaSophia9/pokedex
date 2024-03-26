@@ -4,6 +4,7 @@ let pokemonNames = [];
 let currentPokemon;
 let statNames = [];
 let statValues = [];
+let offset = 0;
 
 async function fetchAndDisplayMiniCards() {
   let info = await load20PokemonInfos();
@@ -75,11 +76,11 @@ function getBackgroundColor(currentPokemonCategory) {
 
 // Popup
 
-async function showPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
-  console.log(i);
+async function showPopup(i) {
   document.getElementById("popupBackground").classList.remove("d_none");
-  renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
   await loadInfo(i);
+  // renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
+
   renderChart();
   disableScroll();
 }
@@ -192,17 +193,18 @@ function clickOnPopupCard() {
 }
 
 async function loadAndPush20MorePokemon() {
+  offset = offset + 20;
+  console.log("offset", offset);
   let nameAndUrlOf20MorePokemonJson = await load20MorePokemonNames();
   await push20MorePokemonNamesIntoArray(nameAndUrlOf20MorePokemonJson);
   renderTheLast20PokemonOfArray();
 }
 
 async function load20MorePokemonNames() {
-  let url20MorePokemon = "https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20";
+  let url20MorePokemon = `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=20`;
   let nameAndUrlOf20MorePokemon = await fetch(url20MorePokemon);
   let nameAndUrlOf20MorePokemonJson = await nameAndUrlOf20MorePokemon.json();
   let infoOf20MorePokemons = nameAndUrlOf20MorePokemonJson["results"];
-
   console.log("20 more Pokemon:", infoOf20MorePokemons);
   return infoOf20MorePokemons;
 }
@@ -226,7 +228,8 @@ async function loadInfoOf20PokemonAndRenderMiniCard() {
   let last20Elemts = pokemonNames.slice(-20);
   for (let i = 0; i < last20Elemts.length; i++) {
     await loadInfoOf1PokemonofLast20(i, last20Elemts);
-    renderMiniCard(i);
+    j = i + 20; // damit klappen die popups, aber nicht mehr die Mini-cards.
+    renderMiniCard(j);
   }
 }
 
