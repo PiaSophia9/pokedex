@@ -13,7 +13,8 @@
   <body onload="fetchAndDisplayMiniCards()">
     <header>
       <h1>Pokedex</h1>
-      <input id="search" onkeydown="filterNames()" type="text" placeholder="Search.." />
+      <input id="search" onkeyup="filterNames()" type="text" placeholder="Search.." />
+      <ul id="list"></ul>
     </header>
 
     <div id="mainContainer"></div>

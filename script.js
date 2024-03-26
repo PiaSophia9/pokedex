@@ -23,10 +23,39 @@ async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
   }
 }
 
+let filteredPokemon = [];
+
 function filterNames() {
   let search = document.getElementById("search").value;
   search = search.toLowerCase();
   console.log(search);
+
+  document.getElementById("mainContainer").innerHTML = "";
+
+  if (search.length >= 3) {
+    for (let index = 0; index < allpokemonNames.length; index++) {
+      const poki = allpokemonNames[index];
+      if (poki.toLowerCase().includes(search)) {
+        let pokemonWithThe3GivenCharacters = poki;
+        console.log("pokemon with the 3 input-characters: ", pokemonWithThe3GivenCharacters);
+        filteredPokemon.push(pokemonWithThe3GivenCharacters);
+        loadInfoOfSearchesPokemonAndRenderMiniCard(pokemonWithThe3GivenCharacters);
+      }
+    }
+  }
+}
+
+async function loadInfoOfSearchesPokemonAndRenderMiniCard(pokemonWithThe3GivenCharacters) {
+  for (let i = 0; i < filteredPokemon.length; i++) {
+    await loadInfoOf1FilteredPokemon(pokemonWithThe3GivenCharacters);
+    renderMiniCard(i);
+  }
+}
+
+async function loadInfoOf1FilteredPokemon(pokemonWithThe3GivenCharacters) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonWithThe3GivenCharacters}`;
+  let response = await fetch(url);
+  currentPokemon = await response.json();
 }
 
 // Mini-Cards
