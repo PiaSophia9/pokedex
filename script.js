@@ -34,7 +34,6 @@ async function loadInfoOfAllPokemonAndRenderMiniCard() {
 }
 
 async function loadInfoOf1Pokemon(i) {
-  const pokemonName = pokemonNames[i];
   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNames[i]}`;
   let response = await fetch(url);
   currentPokemon = await response.json();
@@ -195,6 +194,7 @@ function clickOnPopupCard() {
 async function loadAndPush20MorePokemon() {
   let nameAndUrlOf20MorePokemonJson = await load20MorePokemonNames();
   await push20MorePokemonNamesIntoArray(nameAndUrlOf20MorePokemonJson);
+  renderTheLast20PokemonOfArray();
 }
 
 async function load20MorePokemonNames() {
@@ -213,4 +213,19 @@ async function push20MorePokemonNamesIntoArray(infoOf20MorePokemons) {
     pokemonNames.push(nameNextPokemon);
   }
   console.log("array pokemonNames: ", pokemonNames);
+}
+
+function renderTheLast20PokemonOfArray() {
+  console.log(pokemonNames.length);
+  let last20Elemts = pokemonNames.slice(-20);
+  console.log(last20Elemts);
+  loadInfoOf20PokemonAndRenderMiniCard();
+}
+
+async function loadInfoOf20PokemonAndRenderMiniCard() {
+  let last20Elemts = pokemonNames.slice(-20);
+  for (let i = 0; i < last20Elemts.length; i++) {
+    await loadInfoOf1Pokemon(i);
+    renderMiniCard(i);
+  }
 }
