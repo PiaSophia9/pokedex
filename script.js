@@ -56,7 +56,8 @@ function generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemon
        <p id="miniCardCategory">${currentPokemonCategory}</p>
        </div>
        <img id="miniCardImage" src="${currentPokemonImageSrc}" />
-   </div>`;
+   </div>
+   `;
 }
 
 function getBackgroundColor(currentPokemonCategory) {
@@ -189,4 +190,13 @@ async function showNextPokemon(i) {
 
 function clickOnPopupCard() {
   event.stopPropagation(onclick);
+}
+
+async function load20MorePokemonNames() {
+  let url20MorePokemon = "https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20";
+  let nameAndUrlOf20MorePokemon = await fetch(url20MorePokemon);
+  let nameAndUrlOf20MorePokemonJson = await nameAndUrlOf20MorePokemon.json();
+  let nameOf20MorePokemon = nameAndUrlOf20MorePokemonJson["results"][0]["name"];
+  console.log("20 more Pokemon:", nameOf20MorePokemon);
+  return nameOf20MorePokemon;
 }
