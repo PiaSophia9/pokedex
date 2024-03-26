@@ -1,83 +1,12 @@
-// search
-
-let allpokemonNames = [];
-
-async function fetchAllPokemonNames() {
-  let info = await loadAllPokemonInfos();
-  pushAllPokemonNamesIntoArray(info);
-  console.log("all Pokemon names: ", allpokemonNames);
-}
-
-async function loadAllPokemonInfos() {
-  let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
-  let nameAndUrlOfAllPokemon = await fetch(urlAllPokemon);
-  let nameAndUrlOfAllPokemonJson = await nameAndUrlOfAllPokemon.json();
-  let infoAllpokemons = nameAndUrlOfAllPokemonJson["results"];
-  return infoAllpokemons;
-}
-
-async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
-  for (let i = 0; i < infoAllpokemons.length; i++) {
-    let namePokemonOfAll = infoAllpokemons[i]["name"];
-    allpokemonNames.push(namePokemonOfAll);
-  }
-}
-
-let filteredPokemon = [];
-
-function filterNames() {
-  let search = document.getElementById("search").value;
-  search = search.toLowerCase();
-  console.log(search);
-
-  if (search.length >= 3) {
-    for (let index = 0; index < allpokemonNames.length; index++) {
-      const poki = allpokemonNames[index];
-      if (poki.toLowerCase().includes(search)) {
-        document.getElementById("mainContainer").innerHTML = "";
-        let pokemonWithThe3GivenCharacters = poki;
-        console.log("pokemon with the 3 input-characters: ", pokemonWithThe3GivenCharacters);
-        filteredPokemon.push(pokemonWithThe3GivenCharacters);
-        loadInfoOfSearchesPokemonAndRenderMiniCard(pokemonWithThe3GivenCharacters);
-      }
-    }
-  }
-}
-
-async function loadInfoOfSearchesPokemonAndRenderMiniCard(pokemonWithThe3GivenCharacters) {
-  let filteredPokemon = await loadFilteredPokemon(pokemonWithThe3GivenCharacters);
-  loadInfoFilteredPokemon(filteredPokemon);
-}
-
-async function loadFilteredPokemon(pokemonWithThe3GivenCharacters) {
-  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonWithThe3GivenCharacters}`;
-  let response = await fetch(url);
-  let filteredPokemon = await response.json();
-  return filteredPokemon;
-}
-
-async function loadInfoFilteredPokemon(filteredPokemon) {
-  let name = filteredPokemon["name"];
-  let category = filteredPokemon["types"]["0"]["type"]["name"];
-  let image = filteredPokemon["sprites"]["other"]["official-artwork"]["front_default"];
-  let pokemonStats = filteredPokemon["stats"];
-  let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
-  loadStatsNames(pokemonStats);
-  loadStatsValue(pokemonStats);
-
-  let indexOfNameInArrayALLPOKEMONNAMES = allpokemonNames.indexOf(name);
-  console.log("indexOfNameInArrayALLPOKEMONNAMES: ", indexOfNameInArrayALLPOKEMONNAMES);
-
-  document.getElementById("mainContainer").innerHTML += generateMiniCard(indexOfNameInArrayALLPOKEMONNAMES, color, name, category, image);
-}
-
-// Mini-Cards
-
 let pokemonNames = [];
 let currentPokemon;
 let statNames = [];
 let statValues = [];
 let offset = 0;
+let allpokemonNames = [];
+let filteredPokemon = [];
+
+// Mini-Cards
 
 async function fetchAndDisplayMiniCards() {
   let info = await load20PokemonInfos();
@@ -145,6 +74,32 @@ function getBackgroundColor(currentPokemonCategory) {
     return "#a55d2a";
   } else if (currentPokemonCategory == "normal") {
     return "#FFD757";
+  } else if (currentPokemonCategory == "dark") {
+    return "darkgrey";
+  } else if (currentPokemonCategory == "fairy") {
+    return "pink";
+  } else if (currentPokemonCategory == "dragon") {
+    return "darkBlue";
+  } else if (currentPokemonCategory == "flying") {
+    return "lightblue";
+  } else if (currentPokemonCategory == "ghost") {
+    return "lightgrey";
+  } else if (currentPokemonCategory == "ground") {
+    return "beige";
+  } else if (currentPokemonCategory == "ice") {
+    return "aqua";
+  } else if (currentPokemonCategory == "poison") {
+    return "#greenyellow";
+  } else if (currentPokemonCategory == "psychic") {
+    return "#blueviolet";
+  } else if (currentPokemonCategory == "rock") {
+    return "#413333";
+  } else if (currentPokemonCategory == "steel") {
+    return "silver";
+  } else if (currentPokemonCategory == "electric") {
+    return "#fafaa6";
+  } else if (currentPokemonCategory == "fighting") {
+    return "#CB5F48";
   }
 }
 
@@ -311,4 +266,73 @@ async function loadInfoOf1PokemonofLast20(i, last20) {
   let url = `https://pokeapi.co/api/v2/pokemon/${last20[i]}`;
   let response = await fetch(url);
   currentPokemon = await response.json();
+}
+
+// search
+
+async function fetchAllPokemonNames() {
+  let info = await loadAllPokemonInfos();
+  pushAllPokemonNamesIntoArray(info);
+  console.log("all Pokemon names: ", allpokemonNames);
+}
+
+async function loadAllPokemonInfos() {
+  let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+  let nameAndUrlOfAllPokemon = await fetch(urlAllPokemon);
+  let nameAndUrlOfAllPokemonJson = await nameAndUrlOfAllPokemon.json();
+  let infoAllpokemons = nameAndUrlOfAllPokemonJson["results"];
+  return infoAllpokemons;
+}
+
+async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
+  for (let i = 0; i < infoAllpokemons.length; i++) {
+    let namePokemonOfAll = infoAllpokemons[i]["name"];
+    allpokemonNames.push(namePokemonOfAll);
+  }
+}
+
+function filterNames() {
+  let search = document.getElementById("search").value;
+  search = search.toLowerCase();
+  console.log(search);
+
+  if (search.length >= 3) {
+    for (let index = 0; index < allpokemonNames.length; index++) {
+      const poki = allpokemonNames[index];
+      if (poki.toLowerCase().includes(search)) {
+        document.getElementById("mainContainer").innerHTML = "";
+        let pokemonWithThe3GivenCharacters = poki;
+        console.log("pokemon with the 3 input-characters: ", pokemonWithThe3GivenCharacters);
+        filteredPokemon.push(pokemonWithThe3GivenCharacters);
+        loadInfoOfSearchesPokemonAndRenderMiniCard(pokemonWithThe3GivenCharacters);
+      }
+    }
+  }
+}
+
+async function loadInfoOfSearchesPokemonAndRenderMiniCard(pokemonWithThe3GivenCharacters) {
+  let filteredPokemon = await loadFilteredPokemon(pokemonWithThe3GivenCharacters);
+  loadInfoFilteredPokemon(filteredPokemon);
+}
+
+async function loadFilteredPokemon(pokemonWithThe3GivenCharacters) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonWithThe3GivenCharacters}`;
+  let response = await fetch(url);
+  let filteredPokemon = await response.json();
+  return filteredPokemon;
+}
+
+async function loadInfoFilteredPokemon(filteredPokemon) {
+  let name = filteredPokemon["name"];
+  let category = filteredPokemon["types"]["0"]["type"]["name"];
+  let image = filteredPokemon["sprites"]["other"]["official-artwork"]["front_default"];
+  let pokemonStats = filteredPokemon["stats"];
+  let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
+  loadStatsNames(pokemonStats);
+  loadStatsValue(pokemonStats);
+
+  let indexOfNameInArrayALLPOKEMONNAMES = allpokemonNames.indexOf(name);
+  console.log("indexOfNameInArrayALLPOKEMONNAMES: ", indexOfNameInArrayALLPOKEMONNAMES);
+
+  document.getElementById("mainContainer").innerHTML += generateMiniCard(indexOfNameInArrayALLPOKEMONNAMES, color, name, category, image);
 }
