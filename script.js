@@ -133,7 +133,7 @@ function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCateg
 }
 
 async function loadInfo(i) {
-  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNames[i]}`;
+  let url = `https://pokeapi.co/api/v2/pokemon/${allpokemonNames[i]}`;
   let response = await fetch(url);
   let pokemon = await response.json();
   let name = pokemon["name"];
@@ -239,6 +239,8 @@ function clickOnPopupCard() {
   event.stopPropagation(onclick);
 }
 
+// Lade mehr
+
 async function loadAndPush20MorePokemon() {
   offset = offset + 20;
   console.log("offset", offset);
@@ -288,6 +290,8 @@ async function loadInfoOf1PokemonofLast20(i, last20) {
 
 // search
 
+// 1. Schritt
+
 async function fetchAllPokemonNames() {
   let info = await loadAllPokemonInfos();
   pushAllPokemonNamesIntoArray(info);
@@ -307,6 +311,37 @@ async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
     let namePokemonOfAll = infoAllpokemons[i]["name"];
     allpokemonNames.push(namePokemonOfAll);
   }
+}
+
+// 2. Schritt
+
+async function fetchPokemonNamesSelect20AndFetchTheirInfo() {
+  await fetchAllPokemonNames();
+  take20PokemonOfArrayAndFetchTheirInfo();
+}
+
+let firstIndex = -20;
+let lastIndex = -1;
+
+function take20PokemonOfArrayAndFetchTheirInfo() {
+  firstIndex = firstIndex + 20;
+  lastIndex = lastIndex + 20;
+  console.log("firstIndex: ", firstIndex);
+  console.log("lastIndex: ", lastIndex);
+  let pokemonToDisplay = allpokemonNames.slice(firstIndex, lastIndex); // 20 von allpokemonNames
+  console.log("pokemonToDisplay: ", pokemonToDisplay);
+
+  // auf array allpokemonNames zugreifen
+  // 20 von den pokemon auslesen
+  // infos zu diesen 20 Pokemon fetchen
+  fetchInfoOf20Pokemon(pokemonToDisplay);
+}
+
+function fetchInfoOf20Pokemon() {}
+
+function fruitsX() {
+  let targetFruit = fruits.slice(0, 10);
+  console.log(targetFruit);
 }
 
 function filterNames() {
