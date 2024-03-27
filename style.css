@@ -104,7 +104,7 @@ p {
 }
 
 .d_none {
-  display: none;
+  display: none !important;
 }
 
 #mainContainer {
@@ -174,7 +174,7 @@ p {
   transition-timing-function: ease-in-out;
 }
 
-.section_button {
+#sectionButton {
   background-color: antiquewhite;
   display: flex;
   justify-content: center;
