@@ -66,3 +66,28 @@ async function loadPokemonInfo() {
 //     return "#FFD757";
 //   }
 // }
+
+async function loadInfo(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${allpokemonNames[i].slice(firstIndex, lastIndex)}`;
+  let response = await fetch(url);
+  let pokemon = await response.json();
+  let name = pokemon["name"];
+  let category = pokemon["types"]["0"]["type"]["name"];
+  let image = pokemon["sprites"]["other"]["official-artwork"]["front_default"];
+  let pokemonStats = pokemon["stats"];
+  let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
+  loadStatsNames(pokemonStats);
+  loadStatsValue(pokemonStats);
+  renderPopup(i, color, name, category, image);
+}
+
+function render20MorePokemonX() {
+  firstIndex = firstIndex + 20;
+  lastIndex = lastIndex + 20;
+  loadInfo();
+}
+
+function fruitsX() {
+  let targetFruit = fruits.slice(0, 10);
+  console.log(targetFruit);
+}
