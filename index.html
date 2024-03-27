@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokedex</title>
     <script src="script.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="img/pokeball.png" />
   </head>
 
   <body onload="fetchAndDisplayMiniCards()">
     <header>
-      <h1>Pokedex</h1>
-      <input id="search" onkeyup="filterNames()" type="text" placeholder="Search.." />
-      <ul id="list"></ul>
+      <div class="logo_and_label" onclick="fetchAndDisplayMiniCards()">
+        <img class="pokeball" src="img/pokeball.png" alt="" />
+        <h1>Pokedex</h1>
+      </div>
+      <input id="search" onkeyup="filterNames()" type="text" placeholder="Search" />
     </header>
 
     <div id="mainContainer"></div>
-    <button onclick="loadAndPush20MorePokemon()">Lade mehr</button>
+    <div class="section_button" id="sectionButton">
+      <button onclick="loadAndPush20MorePokemon()">Lade mehr</button>
+    </div>
+
     <div id="popupBackground" onclick="closePopup()" class="card_background d_none"></div>
     <script src="chart.js"></script>
   </body>

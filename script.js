@@ -31,6 +31,7 @@ async function pushFirst20PokemonNamesIntoArray(infoAllpokemons) {
 }
 
 async function loadInfoOfAllPokemonAndRenderMiniCard() {
+  document.getElementById("mainContainer").innerHTML = "";
   for (let i = 0; i < pokemonNames.length; i++) {
     await loadInfoOf1Pokemon(i);
     renderMiniCard(i);
@@ -48,6 +49,7 @@ function renderMiniCard(i) {
   let currentPokemonCategory = currentPokemon["types"]["0"]["type"]["name"];
   let currentPokemonImageSrc = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
   let backgroundColor = getBackgroundColor(currentPokemonCategory);
+
   document.getElementById("mainContainer").innerHTML += generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
 }
 
@@ -85,11 +87,11 @@ function getBackgroundColor(currentPokemonCategory) {
   } else if (currentPokemonCategory == "ghost") {
     return "lightgrey";
   } else if (currentPokemonCategory == "ground") {
-    return "beige";
+    return "brown";
   } else if (currentPokemonCategory == "ice") {
     return "aqua";
   } else if (currentPokemonCategory == "poison") {
-    return "#greenyellow";
+    return "greenyellow";
   } else if (currentPokemonCategory == "psychic") {
     return "#blueviolet";
   } else if (currentPokemonCategory == "rock") {
@@ -97,7 +99,7 @@ function getBackgroundColor(currentPokemonCategory) {
   } else if (currentPokemonCategory == "steel") {
     return "silver";
   } else if (currentPokemonCategory == "electric") {
-    return "#fafaa6";
+    return "#fafa74";
   } else if (currentPokemonCategory == "fighting") {
     return "#CB5F48";
   }
@@ -108,7 +110,6 @@ function getBackgroundColor(currentPokemonCategory) {
 async function showPopup(i) {
   document.getElementById("popupBackground").classList.remove("d_none");
   await loadInfo(i);
-  // renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
 
   renderChart();
   disableScroll();
@@ -145,28 +146,45 @@ async function loadInfo(i) {
   renderPopup(i, color, name, category, image);
 }
 
-function getColor(category) {
-  if (category == "grass") {
+function getColor(currentPokemonCategory) {
+  if (currentPokemonCategory == "grass") {
     return "#48D0B0";
-  } else if (category == "fire") {
+  } else if (currentPokemonCategory == "fire") {
     return "#FB6C6C";
-  } else if (category == "water") {
+  } else if (currentPokemonCategory == "water") {
     return "#58AAF6";
-  } else if (category == "bug") {
+  } else if (currentPokemonCategory == "bug") {
     return "#a55d2a";
-  } else if (category == "normal") {
+  } else if (currentPokemonCategory == "normal") {
     return "#FFD757";
+  } else if (currentPokemonCategory == "dark") {
+    return "darkgrey";
+  } else if (currentPokemonCategory == "fairy") {
+    return "pink";
+  } else if (currentPokemonCategory == "dragon") {
+    return "darkBlue";
+  } else if (currentPokemonCategory == "flying") {
+    return "lightblue";
+  } else if (currentPokemonCategory == "ghost") {
+    return "lightgrey";
+  } else if (currentPokemonCategory == "ground") {
+    return "brown";
+  } else if (currentPokemonCategory == "ice") {
+    return "aqua";
+  } else if (currentPokemonCategory == "poison") {
+    return "greenyellow";
+  } else if (currentPokemonCategory == "psychic") {
+    return "#blueviolet";
+  } else if (currentPokemonCategory == "rock") {
+    return "#413333";
+  } else if (currentPokemonCategory == "steel") {
+    return "silver";
+  } else if (currentPokemonCategory == "electric") {
+    return "#fafa74";
+  } else if (currentPokemonCategory == "fighting") {
+    return "#CB5F48";
   }
 }
-
-// async function loadStats(i) {
-//   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNames[i]}`;
-//   let response = await fetch(url);
-//   let pokemon = await response.json();
-//   let pokemonStats = pokemon["stats"];
-//   loadStatsNames(pokemonStats);
-//   loadStatsValue(pokemonStats);
-// }
 
 function loadStatsNames(pokemonStats) {
   statNames = [];
@@ -297,10 +315,12 @@ function filterNames() {
   console.log(search);
 
   if (search.length >= 3) {
+    document.getElementById("mainContainer").innerHTML = "";
     for (let index = 0; index < allpokemonNames.length; index++) {
       const poki = allpokemonNames[index];
       if (poki.toLowerCase().includes(search)) {
         document.getElementById("mainContainer").innerHTML = "";
+        document.getElementById("sectionButton").classList.add("d_none");
         let pokemonWithThe3GivenCharacters = poki;
         console.log("pokemon with the 3 input-characters: ", pokemonWithThe3GivenCharacters);
         filteredPokemon.push(pokemonWithThe3GivenCharacters);
@@ -333,6 +353,5 @@ async function loadInfoFilteredPokemon(filteredPokemon) {
 
   let indexOfNameInArrayALLPOKEMONNAMES = allpokemonNames.indexOf(name);
   console.log("indexOfNameInArrayALLPOKEMONNAMES: ", indexOfNameInArrayALLPOKEMONNAMES);
-
   document.getElementById("mainContainer").innerHTML += generateMiniCard(indexOfNameInArrayALLPOKEMONNAMES, color, name, category, image);
 }

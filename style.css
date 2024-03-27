@@ -2,6 +2,34 @@ body {
   margin: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 8px;
+}
+
+.logo_and_label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+#search {
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 8px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+::placeholder {
+  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 #cardTopContainer {
   min-height: 50vh;
 
@@ -144,4 +172,35 @@ p {
   transform: scale(1.5);
   transition-duration: 225ms;
   transition-timing-function: ease-in-out;
+}
+
+.section_button {
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 160px;
+}
+
+button {
+  cursor: pointer;
+  outline: 0;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  background-color: white;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #ff3d00;
+  border-color: #ff3d00;
+}
+
+button:hover {
+  color: #fff;
+  background-color: #ff3d00;
+  border-color: #ff3d00;
 }
