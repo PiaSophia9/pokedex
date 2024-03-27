@@ -110,7 +110,6 @@ function getBackgroundColor(currentPokemonCategory) {
 async function showPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").classList.remove("d_none");
   await loadInfo(i);
-
   renderChart();
   disableScroll();
 }
@@ -118,8 +117,8 @@ async function showPopup(i, color, name, category, image, pokemonStats) {
 function renderPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
   <div id="cardTopContainer" style="background-color: ${color};">
-    <img onclick="showPreviousPokemon(${i})" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
-    <img onclick="showNextPokemon(${i})" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
+    <img onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
+    <img onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
     <h1 id="pokemonName">${name}</h1>
     <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
     <img id="pokemonImage" src="${image}"/>
@@ -219,19 +218,28 @@ function enableScroll() {
   document.body.classList.remove("remove-scrolling");
 }
 
-async function showPreviousPokemon(i) {
+async function showPreviousPokemon(name) {
   event.stopPropagation(onclick);
-  j = i - 1;
-  await loadInfo(j);
+  let indexOfParameterName = allpokemonNames.indexOf(name);
+  console.log(indexOfParameterName);
+  let indexForPreviousPokemon = indexOfParameterName - 1;
+  await loadInfo(indexForPreviousPokemon);
   renderChart();
 }
 
-async function showNextPokemon(i) {
+function showPopupX(i, color, name, category, image, pokemonStats) {
+  document.getElementById("popupBackground").classList.remove("d_none");
+  renderPopup(i, color, name, category, image);
+  renderChart();
+  disableScroll();
+}
+
+async function showNextPokemon(name) {
   event.stopPropagation(onclick);
-  let pokemonInPopup = pokemonNames[i];
-  j = i + 1;
-  let nexPokemonInPopup = pokemonNames[j];
-  await loadInfo(j);
+  let indexOfParameterName = allpokemonNames.indexOf(name);
+  console.log(indexOfParameterName);
+  let indexForNextPokemon = indexOfParameterName + 1;
+  await loadInfo(indexForNextPokemon);
   renderChart();
 }
 
