@@ -268,6 +268,7 @@ async function loadInfo(i, namsy) {
 
 async function showNextPokemon(name) {
   event.stopPropagation(onclick);
+  // hier irgendwie mit filteredPokemon arbeiten.
   let indexOfParameterName = allpokemonNames.indexOf(name);
   console.log("index", indexOfParameterName);
   let indexForNextPokemon = indexOfParameterName + 1;
@@ -343,7 +344,7 @@ async function loadInfoOf1PokemonofLast20(i, last20) {
 
 // 1. Schritt
 
-let firstIndex = -20;
+let firstIndex = -40;
 let lastIndex = 0;
 
 async function fetchPokemonNamesSelect20AndFetchTheirInfoAndRenderMiniCard() {
@@ -375,8 +376,8 @@ async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
 // 2. Schritt
 
 function take20PokemonOfArrayAndFetchTheirInfoAndRenderMiniCard() {
-  firstIndex = firstIndex + 20;
-  lastIndex = lastIndex + 20;
+  firstIndex = firstIndex + 40;
+  lastIndex = lastIndex + 40;
   console.log("firstIndex: ", firstIndex);
   console.log("lastIndex: ", lastIndex);
   let namesOfPokemonToDisplay = allpokemonNames.slice(firstIndex, lastIndex); // 20 von allpokemonNames
@@ -405,6 +406,9 @@ async function loadInfoX(i, nameOfPokemonToDisplay) {
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
   renderMiniCardX(i, color, name, category, image, pokemonStats);
+  // if (name == letzter Name im array allpokemonNames) {
+  //   add d_none to lade mehr section
+  // }
 }
 
 function renderMiniCardX(i, color, name, category, image, pokemonStats) {

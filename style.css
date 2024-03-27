@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: antiquewhite;
 }
 
 header {
@@ -9,6 +10,7 @@ header {
   align-items: center;
   gap: 24px;
   padding: 8px;
+  background-color: white;
 }
 
 .logo_and_label {
