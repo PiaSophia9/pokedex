@@ -10,7 +10,8 @@
     <link rel="icon" type="image/x-icon" href="img/pokeball.png" />
   </head>
 
-  <body onload="fetchAndDisplayMiniCards(), fetchPokemonNamesSelect20AndFetchTheirInfo()">
+  <!-- I cut this "fetchAndDisplayMiniCards(),  -->
+  <body onload="fetchPokemonNamesSelect20AndFetchTheirInfoAndRenderMiniCard()">
     <header>
       <div class="logo_and_label" onclick="fetchAndDisplayMiniCards()">
         <img class="pokeball" src="img/pokeball.png" alt="" />
@@ -21,7 +22,7 @@
 
     <div id="mainContainer"></div>
     <div class="section_button" id="sectionButton">
-      <button onclick="loadAndPush20MorePokemon()">Lade mehr</button>
+      <button onclick="take20PokemonOfArrayAndFetchTheirInfoAndRenderMiniCard()">Lade mehr</button>
     </div>
 
     <div id="popupBackground" onclick="closePopup()" class="card_background d_none"></div>

@@ -107,7 +107,7 @@ function getBackgroundColor(currentPokemonCategory) {
 
 // Popup
 
-async function showPopup(i) {
+async function showPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").classList.remove("d_none");
   await loadInfo(i);
 
@@ -115,14 +115,14 @@ async function showPopup(i) {
   disableScroll();
 }
 
-function renderPopup(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
+function renderPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
-  <div id="cardTopContainer" style="background-color: ${backgroundColor};">
+  <div id="cardTopContainer" style="background-color: ${color};">
     <img onclick="showPreviousPokemon(${i})" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
     <img onclick="showNextPokemon(${i})" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
-    <h1 id="pokemonName">${currentPokemonName}</h1>
-    <div class="pokemon_category_container"><h2 id="pokemoncategory">${currentPokemonCategory}</h2></div>
-    <img id="pokemonImage" src="${currentPokemonImageSrc}"/>
+    <h1 id="pokemonName">${name}</h1>
+    <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
+    <img id="pokemonImage" src="${image}"/>
   </div>
   <div class="card_bottom_container">
     <div>
@@ -292,6 +292,14 @@ async function loadInfoOf1PokemonofLast20(i, last20) {
 
 // 1. Schritt
 
+let firstIndex = -20;
+let lastIndex = -1;
+
+async function fetchPokemonNamesSelect20AndFetchTheirInfoAndRenderMiniCard() {
+  await fetchAllPokemonNames();
+  take20PokemonOfArrayAndFetchTheirInfoAndRenderMiniCard();
+}
+
 async function fetchAllPokemonNames() {
   let info = await loadAllPokemonInfos();
   pushAllPokemonNamesIntoArray(info);
@@ -315,33 +323,59 @@ async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
 
 // 2. Schritt
 
-async function fetchPokemonNamesSelect20AndFetchTheirInfo() {
-  await fetchAllPokemonNames();
-  take20PokemonOfArrayAndFetchTheirInfo();
-}
-
-let firstIndex = -20;
-let lastIndex = -1;
-
-function take20PokemonOfArrayAndFetchTheirInfo() {
+function take20PokemonOfArrayAndFetchTheirInfoAndRenderMiniCard() {
   firstIndex = firstIndex + 20;
   lastIndex = lastIndex + 20;
   console.log("firstIndex: ", firstIndex);
   console.log("lastIndex: ", lastIndex);
-  let pokemonToDisplay = allpokemonNames.slice(firstIndex, lastIndex); // 20 von allpokemonNames
-  console.log("pokemonToDisplay: ", pokemonToDisplay);
-
-  // auf array allpokemonNames zugreifen
-  // 20 von den pokemon auslesen
-  // infos zu diesen 20 Pokemon fetchen
-  fetchInfoOf20Pokemon(pokemonToDisplay);
+  let namesOfPokemonToDisplay = allpokemonNames.slice(firstIndex, lastIndex); // 20 von allpokemonNames
+  console.log("NamesOfPokemonToDisplay: ", namesOfPokemonToDisplay);
+  fetchInfoOf20Pokemon(namesOfPokemonToDisplay);
 }
 
-function fetchInfoOf20Pokemon() {}
+async function fetchInfoOf20Pokemon(namesOfPokemonToDisplay) {
+  console.log("NamesOfPokemonToDisplay in next Function: ", namesOfPokemonToDisplay);
+  for (let i = 0; i < namesOfPokemonToDisplay.length; i++) {
+    let nameOfPokemonToDisplay = namesOfPokemonToDisplay[i];
+    await loadInfoX(i, nameOfPokemonToDisplay);
+  }
+}
 
-function fruitsX() {
-  let targetFruit = fruits.slice(0, 10);
-  console.log(targetFruit);
+async function loadInfoX(i, nameOfPokemonToDisplay) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${nameOfPokemonToDisplay}`;
+  let response = await fetch(url);
+  let pokemon = await response.json();
+  let name = pokemon["name"];
+  let category = pokemon["types"]["0"]["type"]["name"];
+  let image = pokemon["sprites"]["other"]["official-artwork"]["front_default"];
+  let pokemonStats = pokemon["stats"];
+  let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
+  loadStatsNames(pokemonStats);
+  loadStatsValue(pokemonStats);
+  renderMiniCardX(i, color, name, category, image, pokemonStats);
+}
+
+function renderMiniCardX(i, color, name, category, image, pokemonStats) {
+  document.getElementById("mainContainer").innerHTML += generateMiniCardX(i, color, name, category, image, pokemonStats);
+}
+
+function generateMiniCardX(i, color, name, category, image, pokemonStats) {
+  return `
+  <div id='miniCard${i}' onclick="showPopupX('${i}', '${color}', '${name}', '${category}', '${image}', '${pokemonStats}')" class="mini_card" style="background-color: ${color};">
+     <div class="container_name_and_category">
+     <h3 id="miniCardName">${name}</h3>
+       <p id="miniCardCategory">${category}</p>
+       </div>
+       <img id="miniCardImage" src="${image}" />
+   </div>
+   `;
+}
+
+function showPopupX(i, color, name, category, image, pokemonStats) {
+  document.getElementById("popupBackground").classList.remove("d_none");
+  renderPopup(i, color, name, category, image);
+  renderChart();
+  disableScroll();
 }
 
 function filterNames() {
