@@ -4,7 +4,6 @@ let statNames = [];
 let statValues = [];
 let offset = 0;
 let allpokemonNames = [];
-let filteredPokemons = [];
 
 // Mini-Cards
 
@@ -49,11 +48,11 @@ function renderMiniCard(i) {
   let currentPokemonCategory = currentPokemon["types"]["0"]["type"]["name"];
   let currentPokemonImageSrc = currentPokemon["sprites"]["other"]["official-artwork"]["front_default"];
   let backgroundColor = getBackgroundColor(currentPokemonCategory);
+
   document.getElementById("mainContainer").innerHTML += generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc);
 }
 
 function generateMiniCard(i, backgroundColor, currentPokemonName, currentPokemonCategory, currentPokemonImageSrc) {
-  // i eventuell noch anpassen. name eingeben und den index in allPokemonNames suchen und dann diesen index als i weietrgeben.
   return `
   <div id='miniCard${i}' onclick="showPopup('${i}', '${backgroundColor}', '${currentPokemonName}', '${currentPokemonCategory}', '${currentPokemonImageSrc}')" class="mini_card" style="background-color: ${backgroundColor};">
      <div class="container_name_and_category">
@@ -440,66 +439,50 @@ function showPopupX(i, color, name, category, image, pokemonStats) {
   disableScroll();
 }
 
-async function filterNames() {
-  let search = document.getElementById("search").value;
-  search = search.toLowerCase();
-  if (search.length >= 3) {
+let TenFilteredPokemon = [];
+
+function filterNames() {
+  let searchValue = document.getElementById("search").value;
+  searchValue = searchValue.toLowerCase();
+  if (searchValue.length >= 3) {
     document.getElementById("mainContainer").innerHTML = "";
-    filteredPokemons = [];
     for (let index = 0; index < allpokemonNames.length; index++) {
-      const poki = allpokemonNames[index];
-      if (poki.toLowerCase().includes(search)) {
-        document.getElementById("mainContainer").innerHTML = "";
-        document.getElementById("sectionButton").classList.add("d_none");
-        let url = `https://pokeapi.co/api/v2/pokemon/${poki}`;
-        let response = await fetch(url);
-        let filteredPokemonJson = await response.json();
-        filteredPokemons.push(filteredPokemonJson);
-        // ich solle dort Objekte rein pushen
+      // ich gehe alle Namen von allpokemonNames durch
+      const filteredPokemon = allpokemonNames[index];
+      if (filteredPokemon.toLowerCase().includes(searchValue)) {
+        // Wenn ein name in allpokemonNames dem, was ich in den Input eingegeben habe... entspricht..
+        document.getElementById("mainContainer").innerHTML = ""; // ...wird der mainConatiner geleert
+        document.getElementById("sectionButton").classList.add("d_none"); // ...wird die Section mit Button entfernt
+        let filteredPokemonArray = [];
+        filteredPokemonArray.push(filteredPokemon); //... wird das gefilterte Pokemon in das array filteredPokemonArray gepusht
+        TenFilteredPokemon = filteredPokemonArray.slice(0, 10); //...wird das array filteredPokemonArray
+        console.log(TenFilteredPokemon);
+        // array erstellen.
       }
     }
-    loadInfoAndrenderFilteredPokemon();
   }
 }
 
-async function loadInfoAndrenderFilteredPokemon() {
-  for (let i = 0; i < 10; i++) {
-    // for (let i = 0; i < filteredPokemons.length; i++) {
-    const filteredPokemon = filteredPokemons[i];
-    let name = filteredPokemons[i]["name"];
-    let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
-    let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
-    let pokemonStats = filteredPokemons[i]["stats"];
-    let color = getColor(category);
-    loadStatsNames(pokemonStats);
-    loadStatsValue(pokemonStats);
-    // let indexOfNameInArrayALLPOKEMONNAMES = allpokemonNames.indexOf(name);
-    document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
-  }
+async function loadInfoOfSearchesPokemonAndRenderMiniCard() {
+  let filteredPokemonInfo = await loadFilteredPokemon();
+  loadInfoFilteredPokemon(filteredPokemonInfo);
 }
 
-// async function loadInfoOfSearchesPokemonAndRenderMiniCard(pokemonWithThe3GivenCharacters) {
-//   let filteredPokemon = await loadFilteredPokemon(pokemonWithThe3GivenCharacters);
-//   loadInfoFilteredPokemon(filteredPokemon);
-// }
+async function loadFilteredPokemon(pokemonWithThe3GivenCharacters) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonWithThe3GivenCharacters}`;
+  let response = await fetch(url);
+  let filteredPokemonJson = await response.json();
+  return filteredPokemonJson;
+}
 
-// async function loadFilteredPokemon(pokemonWithThe3GivenCharacters) {
-//   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonWithThe3GivenCharacters}`;
-//   let response = await fetch(url);
-//   let filteredPokemon = await response.json();
-//   // let max10FilteredPokemon = filteredPokemon.slice(0, 9);
-//   // console.log(max10FilteredPokemon);
-//   return filteredPokemon;
-// }
-
-// async function loadInfoFilteredPokemon(filteredPokemon) {
-//   let name = filteredPokemon["name"];
-//   let category = filteredPokemon["types"]["0"]["type"]["name"];
-//   let image = filteredPokemon["sprites"]["other"]["official-artwork"]["front_default"];
-//   let pokemonStats = filteredPokemon["stats"];
-//   let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
-//   loadStatsNames(pokemonStats);
-//   loadStatsValue(pokemonStats);
-//   let indexOfNameInArrayALLPOKEMONNAMES = allpokemonNames.indexOf(name);
-//   document.getElementById("mainContainer").innerHTML += generateMiniCard(indexOfNameInArrayALLPOKEMONNAMES, color, name, category, image);
-// }
+async function loadInfoFilteredPokemon(filteredPokemonInfo) {
+  let name = TenFilteredPokemon[0]["name"]; // Hier muss ich ansetzen und hier eine for-Schleife vor packen
+  let category = TenFilteredPokemon[0]["types"]["0"]["type"]["name"];
+  let image = TenFilteredPokemon[0]["sprites"]["other"]["official-artwork"]["front_default"];
+  let pokemonStats = TenFilteredPokemon[0]["stats"];
+  let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
+  loadStatsNames(pokemonStats);
+  loadStatsValue(pokemonStats);
+  let indexOfNameInArrayALLPOKEMONNAMES = allpokemonNames.indexOf(name);
+  document.getElementById("mainContainer").innerHTML += generateMiniCard(indexOfNameInArrayALLPOKEMONNAMES, color, name, category, image);
+}
