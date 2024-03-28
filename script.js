@@ -8,41 +8,41 @@ let filteredPokemons = [];
 
 // Mini-Cards
 
-async function fetchAndDisplayMiniCards() {
-  let info = await load20PokemonInfos();
-  pushFirst20PokemonNamesIntoArray(info);
-  await loadInfoOfAllPokemonAndRenderMiniCard();
-  fetchAllPokemonNames();
-}
+// async function fetchAndDisplayMiniCards() {
+//   let info = await load20PokemonInfos();
+//   pushFirst20PokemonNamesIntoArray(info);
+//   await loadInfoOfAllPokemonAndRenderMiniCard();
+//   fetchAllPokemonNames();
+// }
 
-async function load20PokemonInfos() {
-  let url20Pokemon = "https://pokeapi.co/api/v2/pokemon/";
-  let nameAndUrlOf20Pokemon = await fetch(url20Pokemon);
-  let nameAndUrlOf20PokemonJson = await nameAndUrlOf20Pokemon.json();
-  let infoAllpokemons = nameAndUrlOf20PokemonJson["results"];
-  return infoAllpokemons;
-}
+// async function load20PokemonInfos() {
+//   let url20Pokemon = "https://pokeapi.co/api/v2/pokemon/";
+//   let nameAndUrlOf20Pokemon = await fetch(url20Pokemon);
+//   let nameAndUrlOf20PokemonJson = await nameAndUrlOf20Pokemon.json();
+//   let infoAllpokemons = nameAndUrlOf20PokemonJson["results"];
+//   return infoAllpokemons;
+// }
 
-async function pushFirst20PokemonNamesIntoArray(infoAllpokemons) {
-  for (let i = 0; i < infoAllpokemons.length; i++) {
-    let namePokemon = infoAllpokemons[i]["name"];
-    pokemonNames.push(namePokemon);
-  }
-}
+// async function pushFirst20PokemonNamesIntoArray(infoAllpokemons) {
+//   for (let i = 0; i < infoAllpokemons.length; i++) {
+//     let namePokemon = infoAllpokemons[i]["name"];
+//     pokemonNames.push(namePokemon);
+//   }
+// }
 
-async function loadInfoOfAllPokemonAndRenderMiniCard() {
-  document.getElementById("mainContainer").innerHTML = "";
-  for (let i = 0; i < pokemonNames.length; i++) {
-    await loadInfoOf1Pokemon(i);
-    renderMiniCard(i);
-  }
-}
+// async function loadInfoOfAllPokemonAndRenderMiniCard() {
+//   document.getElementById("mainContainer").innerHTML = "";
+//   for (let i = 0; i < pokemonNames.length; i++) {
+//     await loadInfoOf1Pokemon(i);
+//     renderMiniCard(i);
+//   }
+// }
 
-async function loadInfoOf1Pokemon(i) {
-  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNames[i]}`;
-  let response = await fetch(url);
-  currentPokemon = await response.json();
-}
+// async function loadInfoOf1Pokemon(i) {
+//   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonNames[i]}`;
+//   let response = await fetch(url);
+//   currentPokemon = await response.json();
+// }
 
 function renderMiniCard(i) {
   let currentPokemonName = currentPokemon["name"];
@@ -107,83 +107,45 @@ function getBackgroundColor(currentPokemonCategory) {
 
 // Popup
 
-// async function showPopup(i, color, name, category, image, pokemonStats) {
-//   document.getElementById("popupBackground").classList.remove("d_none");
-//   await loadInfo(i);
-//   renderChart();
-//   disableScroll();
+// function getColor(currentPokemonCategory) {
+//   if (currentPokemonCategory == "grass") {
+//     return "#48D0B0";
+//   } else if (currentPokemonCategory == "fire") {
+//     return "#FB6C6C";
+//   } else if (currentPokemonCategory == "water") {
+//     return "#58AAF6";
+//   } else if (currentPokemonCategory == "bug") {
+//     return "#a55d2a";
+//   } else if (currentPokemonCategory == "normal") {
+//     return "#FFD757";
+//   } else if (currentPokemonCategory == "dark") {
+//     return "darkgrey";
+//   } else if (currentPokemonCategory == "fairy") {
+//     return "pink";
+//   } else if (currentPokemonCategory == "dragon") {
+//     return "darkBlue";
+//   } else if (currentPokemonCategory == "flying") {
+//     return "lightblue";
+//   } else if (currentPokemonCategory == "ghost") {
+//     return "lightgrey";
+//   } else if (currentPokemonCategory == "ground") {
+//     return "brown";
+//   } else if (currentPokemonCategory == "ice") {
+//     return "aqua";
+//   } else if (currentPokemonCategory == "poison") {
+//     return "greenyellow";
+//   } else if (currentPokemonCategory == "psychic") {
+//     return "#blueviolet";
+//   } else if (currentPokemonCategory == "rock") {
+//     return "#413333";
+//   } else if (currentPokemonCategory == "steel") {
+//     return "silver";
+//   } else if (currentPokemonCategory == "electric") {
+//     return "#fafa74";
+//   } else if (currentPokemonCategory == "fighting") {
+//     return "#CB5F48";
+//   }
 // }
-
-// function renderPopup(i, color, name, category, image, pokemonStats) {
-//   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
-//   <div id="cardTopContainer" style="background-color: ${color};">
-//     <img onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
-//     <img onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
-//     <h1 id="pokemonName">${name}</h1>
-//     <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
-//     <img id="pokemonImage" src="${image}"/>
-//   </div>
-//   <div class="card_bottom_container">
-//     <div>
-//       <canvas id="myChart"></canvas>
-//     </div>
-//   </div>
-// </div>`;
-// }
-
-// async function loadInfo(i) {
-//   let url = `https://pokeapi.co/api/v2/pokemon/${allpokemonNames[i]}`;
-//   let response = await fetch(url);
-//   let pokemon = await response.json();
-//   let name = pokemon["name"];
-//   let category = pokemon["types"]["0"]["type"]["name"];
-//   let image = pokemon["sprites"]["other"]["official-artwork"]["front_default"];
-//   let pokemonStats = pokemon["stats"];
-//   let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
-//   loadStatsNames(pokemonStats);
-//   loadStatsValue(pokemonStats);
-//   renderPopup(i, color, name, category, image);
-// }
-
-function getColor(currentPokemonCategory) {
-  if (currentPokemonCategory == "grass") {
-    return "#48D0B0";
-  } else if (currentPokemonCategory == "fire") {
-    return "#FB6C6C";
-  } else if (currentPokemonCategory == "water") {
-    return "#58AAF6";
-  } else if (currentPokemonCategory == "bug") {
-    return "#a55d2a";
-  } else if (currentPokemonCategory == "normal") {
-    return "#FFD757";
-  } else if (currentPokemonCategory == "dark") {
-    return "darkgrey";
-  } else if (currentPokemonCategory == "fairy") {
-    return "pink";
-  } else if (currentPokemonCategory == "dragon") {
-    return "darkBlue";
-  } else if (currentPokemonCategory == "flying") {
-    return "lightblue";
-  } else if (currentPokemonCategory == "ghost") {
-    return "lightgrey";
-  } else if (currentPokemonCategory == "ground") {
-    return "brown";
-  } else if (currentPokemonCategory == "ice") {
-    return "aqua";
-  } else if (currentPokemonCategory == "poison") {
-    return "greenyellow";
-  } else if (currentPokemonCategory == "psychic") {
-    return "#blueviolet";
-  } else if (currentPokemonCategory == "rock") {
-    return "#413333";
-  } else if (currentPokemonCategory == "steel") {
-    return "silver";
-  } else if (currentPokemonCategory == "electric") {
-    return "#fafa74";
-  } else if (currentPokemonCategory == "fighting") {
-    return "#CB5F48";
-  }
-}
 
 function loadStatsNames(pokemonStats) {
   statNames = [];
@@ -240,7 +202,7 @@ async function loadInfo(i, nameInfo) {
   let category = pokemon["types"]["0"]["type"]["name"];
   let image = pokemon["sprites"]["other"]["official-artwork"]["front_default"];
   let pokemonStats = pokemon["stats"];
-  let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
+  let color = getBackgroundColor(category); // Bis hierhin bekommt das Programm alles doppelt.
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
   renderPopup(i, color, name, category, image);
@@ -350,11 +312,11 @@ function clickOnPopupCard() {
 //   }
 // }
 
-async function loadInfoOf1PokemonofLast20(i, last20) {
-  let url = `https://pokeapi.co/api/v2/pokemon/${last20[i]}`;
-  let response = await fetch(url);
-  currentPokemon = await response.json();
-}
+// async function loadInfoOf1PokemonofLast20(i, last20) {
+//   let url = `https://pokeapi.co/api/v2/pokemon/${last20[i]}`;
+//   let response = await fetch(url);
+//   currentPokemon = await response.json();
+// }
 
 // search
 
@@ -405,6 +367,7 @@ async function fetchInfoOf20Pokemon(namesOfPokemonToDisplay) {
   }
 }
 
+//USED
 async function loadInfoX(i, nameOfPokemonToDisplay) {
   let url = `https://pokeapi.co/api/v2/pokemon/${nameOfPokemonToDisplay}`;
   let response = await fetch(url);
@@ -413,7 +376,7 @@ async function loadInfoX(i, nameOfPokemonToDisplay) {
   let category = pokemon["types"]["0"]["type"]["name"];
   let image = pokemon["sprites"]["other"]["official-artwork"]["front_default"];
   let pokemonStats = pokemon["stats"];
-  let color = getColor(category); // Bis hierhin bekommt das Programm alles doppelt.
+  let color = getBackgroundColor(category); // Bis hierhin bekommt das Programm alles doppelt.
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
   renderMiniCardX(i, color, name, category, image, pokemonStats);
@@ -438,12 +401,12 @@ function generateMiniCardX(i, color, name, category, image, pokemonStats) {
    `;
 }
 
-function showPopupX(i, color, name, category, image, pokemonStats) {
-  document.getElementById("popupBackground").classList.remove("d_none");
-  renderPopup(i, color, name, category, image);
-  renderChart();
-  disableScroll();
-}
+// function showPopupX(i, color, name, category, image, pokemonStats) {
+//   document.getElementById("popupBackground").classList.remove("d_none");
+//   renderPopup(i, color, name, category, image);
+//   renderChart();
+//   disableScroll();
+// }
 
 async function filterNames() {
   let search = document.getElementById("search").value;
@@ -475,7 +438,7 @@ async function loadInfoAndrenderFilteredPokemon() {
     let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
     let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
     let pokemonStats = filteredPokemons[i]["stats"];
-    let color = getColor(category);
+    let color = getBackgroundColor(category);
     loadStatsNames(pokemonStats);
     loadStatsValue(pokemonStats);
     // let indexOfNameInArrayALLPOKEMONNAMES = allpokemonNames.indexOf(name);
