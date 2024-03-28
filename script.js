@@ -249,15 +249,18 @@ async function loadInfo(i, nameInfo) {
 function renderPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
   <div id="cardTopContainer" style="background-color: ${color};">
-    <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
-    <img id="foreward" onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
-    <h1 id="pokemonName">${name}</h1>
+    <div class="container_arrows_and_names">
+       <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
+       <h1 id="pokemonName">${name}</h1>
+       <img id="foreward" onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
+    </div>
+    
     <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
     <img id="pokemonImage" src="${image}"/>
   </div>
   <div class="card_bottom_container">
-    <div>
-      <canvas id="myChart"></canvas>
+    <div class="my_chart_container">
+      <canvas id="myChart" position: relative;></canvas>
     </div>
   </div>
 </div>`;
@@ -268,14 +271,16 @@ function renderPopup(i, color, name, category, image, pokemonStats) {
 function dontShowArrowOfFirstPokemon(name) {
   let result = allpokemonNames.indexOf(name);
   if (result == 0) {
-    document.getElementById("back").classList.add("d_none");
+    document.getElementById("back").classList.add("transparent");
+    document.getElementById("back").classList.add("no_pointer");
   }
 }
 
 function dontShowArrowOfLastPokemon(name) {
   let result = allpokemonNames.indexOf(name);
   if (result == allpokemonNames.length - 1) {
-    document.getElementById("foreward").classList.add("d_none");
+    document.getElementById("foreward").classList.add("transparent");
+    document.getElementById("back").classList.add("no_pointer");
   }
 }
 

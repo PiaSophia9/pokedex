@@ -25,6 +25,7 @@ function renderChart() {
     },
     options: {
       options: {
+        responsive: true,
         maintainAspectRatio: false,
       }, // with this you can use in your css-file how big the chart should be.
       legend: {
