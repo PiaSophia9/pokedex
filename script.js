@@ -212,17 +212,17 @@ function clickOnPopupCard() {
 
 async function fetchNamesAndRenderMiniCard() {
   await fetchPokemonNames();
-  take20PokemonOfArrayAndFetchTheirInfoAndRenderMiniCard();
+  fetchInfoForNext20();
 }
 
-function take20PokemonOfArrayAndFetchTheirInfoAndRenderMiniCard() {
+function fetchInfoForNext20() {
   firstIndex = firstIndex + 20;
   lastIndex = lastIndex + 20;
   let namesOfPokemonToDisplay = allpokemonNames.slice(firstIndex, lastIndex);
-  fetchInfoOf20Pokemon(namesOfPokemonToDisplay);
+  fetchInfoForNames(namesOfPokemonToDisplay);
 }
 
-async function fetchInfoOf20Pokemon(namesOfPokemonToDisplay) {
+async function fetchInfoForNames(namesOfPokemonToDisplay) {
   for (let i = 0; i < namesOfPokemonToDisplay.length; i++) {
     let nameOfPokemonToDisplay = namesOfPokemonToDisplay[i];
     await loadInfoX(i, nameOfPokemonToDisplay);
