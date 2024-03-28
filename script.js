@@ -218,14 +218,14 @@ function enableScroll() {
   document.body.classList.remove("remove-scrolling");
 }
 
-function showPopupX(i, color, name, category, image, pokemonStats) {
-  document.getElementById("popupBackground").classList.remove("d_none");
-  loadStatsNames(i, color, name, category, image, pokemonStats);
-  loadStatsValue(pokemonStats);
-  renderPopup(i, color, name, category, image);
-  renderChart();
-  disableScroll();
-}
+// function showPopupX(i, color, name, category, image, pokemonStats) {
+//   document.getElementById("popupBackground").classList.remove("d_none");
+//   loadStatsNames(i, color, name, category, image, pokemonStats);
+//   loadStatsValue(pokemonStats);
+//   renderPopup(i, color, name, category, image);
+//   renderChart();
+//   disableScroll();
+// }
 
 async function showPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").classList.remove("d_none");
@@ -234,26 +234,9 @@ async function showPopup(i, color, name, category, image, pokemonStats) {
   disableScroll();
 }
 
-function renderPopup(i, color, name, category, image, pokemonStats) {
-  document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
-  <div id="cardTopContainer" style="background-color: ${color};">
-    <img onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
-    <img onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
-    <h1 id="pokemonName">${name}</h1>
-    <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
-    <img id="pokemonImage" src="${image}"/>
-  </div>
-  <div class="card_bottom_container">
-    <div>
-      <canvas id="myChart"></canvas>
-    </div>
-  </div>
-</div>`;
-}
-
-async function loadInfo(i, namsy) {
-  console.log("NAME:::::", namsy);
-  let url = `https://pokeapi.co/api/v2/pokemon/${namsy}`;
+async function loadInfo(i, nameInfo) {
+  console.log("NAME:::::", nameInfo);
+  let url = `https://pokeapi.co/api/v2/pokemon/${nameInfo}`;
   let response = await fetch(url);
   let pokemon = await response.json();
   let name = pokemon["name"];
@@ -264,6 +247,39 @@ async function loadInfo(i, namsy) {
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
   renderPopup(i, color, name, category, image);
+}
+
+function renderPopup(i, color, name, category, image, pokemonStats) {
+  document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
+  <div id="cardTopContainer" style="background-color: ${color};">
+    <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
+    <img id="foreward" onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
+    <h1 id="pokemonName">${name}</h1>
+    <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
+    <img id="pokemonImage" src="${image}"/>
+  </div>
+  <div class="card_bottom_container">
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+</div>`;
+  dontShowArrowOfFirstPokemon(name);
+  dontShowArrowOfLastPokemon(name);
+}
+
+function dontShowArrowOfFirstPokemon(name) {
+  let result = allpokemonNames.indexOf(name);
+  if (result == 0) {
+    document.getElementById("back").classList.add("d_none");
+  }
+}
+
+function dontShowArrowOfLastPokemon(name) {
+  let result = allpokemonNames.indexOf(name);
+  if (result == allpokemonNames.length - 1) {
+    document.getElementById("foreward").classList.add("d_none");
+  }
 }
 
 async function showNextPokemon(name) {
@@ -293,46 +309,46 @@ function clickOnPopupCard() {
 
 // Lade mehr
 
-async function loadAndPush20MorePokemon() {
-  offset = offset + 20;
-  console.log("offset", offset);
-  let nameAndUrlOf20MorePokemonJson = await load20MorePokemonNames();
-  await push20MorePokemonNamesIntoArray(nameAndUrlOf20MorePokemonJson);
-  renderTheLast20PokemonOfArray();
-}
+// async function loadAndPush20MorePokemon() {
+//   offset = offset + 20;
+//   console.log("offset", offset);
+//   let nameAndUrlOf20MorePokemonJson = await load20MorePokemonNames();
+//   await push20MorePokemonNamesIntoArray(nameAndUrlOf20MorePokemonJson);
+//   renderTheLast20PokemonOfArray();
+// }
 
-async function load20MorePokemonNames() {
-  let url20MorePokemon = `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=20`;
-  let nameAndUrlOf20MorePokemon = await fetch(url20MorePokemon);
-  let nameAndUrlOf20MorePokemonJson = await nameAndUrlOf20MorePokemon.json();
-  let infoOf20MorePokemons = nameAndUrlOf20MorePokemonJson["results"];
-  console.log("20 more Pokemon:", infoOf20MorePokemons);
-  return infoOf20MorePokemons;
-}
+// async function load20MorePokemonNames() {
+//   let url20MorePokemon = `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=20`;
+//   let nameAndUrlOf20MorePokemon = await fetch(url20MorePokemon);
+//   let nameAndUrlOf20MorePokemonJson = await nameAndUrlOf20MorePokemon.json();
+//   let infoOf20MorePokemons = nameAndUrlOf20MorePokemonJson["results"];
+//   console.log("20 more Pokemon:", infoOf20MorePokemons);
+//   return infoOf20MorePokemons;
+// }
 
-async function push20MorePokemonNamesIntoArray(infoOf20MorePokemons) {
-  for (let i = 0; i < infoOf20MorePokemons.length; i++) {
-    let nameNextPokemon = infoOf20MorePokemons[i]["name"];
-    pokemonNames.push(nameNextPokemon);
-  }
-  console.log("array pokemonNames: ", pokemonNames);
-}
+// async function push20MorePokemonNamesIntoArray(infoOf20MorePokemons) {
+//   for (let i = 0; i < infoOf20MorePokemons.length; i++) {
+//     let nameNextPokemon = infoOf20MorePokemons[i]["name"];
+//     pokemonNames.push(nameNextPokemon);
+//   }
+//   console.log("array pokemonNames: ", pokemonNames);
+// }
 
-function renderTheLast20PokemonOfArray() {
-  console.log(pokemonNames.length);
-  let last20Elemts = pokemonNames.slice(-20);
-  console.log(last20Elemts);
-  loadInfoOf20PokemonAndRenderMiniCard();
-}
+// function renderTheLast20PokemonOfArray() {
+//   console.log(pokemonNames.length);
+//   let last20Elemts = pokemonNames.slice(-20);
+//   console.log(last20Elemts);
+//   loadInfoOf20PokemonAndRenderMiniCard();
+// }
 
-async function loadInfoOf20PokemonAndRenderMiniCard() {
-  let last20Elemts = pokemonNames.slice(-20);
-  for (let i = 0; i < last20Elemts.length; i++) {
-    await loadInfoOf1PokemonofLast20(i, last20Elemts);
-    j = i + 20; // damit klappen die popups, aber nicht mehr die Mini-cards.
-    renderMiniCard(j);
-  }
-}
+// async function loadInfoOf20PokemonAndRenderMiniCard() {
+//   let last20Elemts = pokemonNames.slice(-20);
+//   for (let i = 0; i < last20Elemts.length; i++) {
+//     await loadInfoOf1PokemonofLast20(i, last20Elemts);
+//     j = i + 20; // damit klappen die popups, aber nicht mehr die Mini-cards.
+//     renderMiniCard(j);
+//   }
+// }
 
 async function loadInfoOf1PokemonofLast20(i, last20) {
   let url = `https://pokeapi.co/api/v2/pokemon/${last20[i]}`;
@@ -464,7 +480,9 @@ async function loadFilteredPokemon(pokemonWithThe3GivenCharacters) {
   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonWithThe3GivenCharacters}`;
   let response = await fetch(url);
   let filteredPokemon = await response.json();
-  return filteredPokemon;
+  let max10FilteredPokemon = filteredPokemon.slice(0, 9);
+  console.log(max10FilteredPokemon);
+  return max10FilteredPokemon;
 }
 
 async function loadInfoFilteredPokemon(filteredPokemon) {
