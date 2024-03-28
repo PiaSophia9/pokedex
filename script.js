@@ -322,7 +322,7 @@ function clickOnPopupCard() {
 
 // 1. Schritt
 
-let firstIndex = -40;
+let firstIndex = -20;
 let lastIndex = 0;
 
 async function fetchPokemonNamesSelect20AndFetchTheirInfoAndRenderMiniCard() {
@@ -354,8 +354,8 @@ async function pushAllPokemonNamesIntoArray(infoAllpokemons) {
 // 2. Schritt
 
 function take20PokemonOfArrayAndFetchTheirInfoAndRenderMiniCard() {
-  firstIndex = firstIndex + 40;
-  lastIndex = lastIndex + 40;
+  firstIndex = firstIndex + 20;
+  lastIndex = lastIndex + 20;
   let namesOfPokemonToDisplay = allpokemonNames.slice(firstIndex, lastIndex); // 20 von allpokemonNames
   fetchInfoOf20Pokemon(namesOfPokemonToDisplay);
 }
