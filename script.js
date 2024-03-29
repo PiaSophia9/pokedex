@@ -1,16 +1,16 @@
-// let pokemonNames = [];
-// let currentPokemon;
-let allpokemonNames = [];
+let allPokemonNames = [];
 let filteredPokemons = [];
 let firstIndex = -20;
 let lastIndex = 0;
 let statNames = [];
 let statValues = [];
-// let offset = 0;
-
-// let pokemonData = [];
 
 // Creat array allpokemonNames
+
+async function fetchNamesAndRenderMiniCard() {
+  await fetchAndPushNames();
+  fetchInfoForNext20();
+}
 
 async function fetchAndPushNames() {
   let info = await fetchInfo();
@@ -28,32 +28,27 @@ async function fetchInfo() {
 async function pushNames(infoAllpokemons) {
   for (let i = 0; i < infoAllpokemons.length; i++) {
     let namePokemonOfAll = infoAllpokemons[i]["name"];
-    allpokemonNames.push(namePokemonOfAll);
+    allPokemonNames.push(namePokemonOfAll);
   }
 }
 
 // Render 20 Mini-Cards
 
-async function fetchNamesAndRenderMiniCard() {
-  await fetchAndPushNames();
-  fetchInfoForNext20();
-}
-
 function fetchInfoForNext20() {
   firstIndex = firstIndex + 20;
   lastIndex = lastIndex + 20;
-  let namesOfPokemonToDisplay = allpokemonNames.slice(firstIndex, lastIndex);
+  let namesOfPokemonToDisplay = allPokemonNames.slice(firstIndex, lastIndex);
   fetchInfoForNames(namesOfPokemonToDisplay);
 }
 
 async function fetchInfoForNames(namesOfPokemonToDisplay) {
   for (let i = 0; i < namesOfPokemonToDisplay.length; i++) {
     let nameOfPokemonToDisplay = namesOfPokemonToDisplay[i];
-    await loadInfo(i, nameOfPokemonToDisplay, renderMiniCard);
+    await loadInfo(nameOfPokemonToDisplay, renderMiniCard);
   }
 }
 
-async function loadInfo(i, nameParam, functionName) {
+async function loadInfo(nameParam, functionName) {
   let url = `https://pokeapi.co/api/v2/pokemon/${nameParam}`;
   let response = await fetch(url);
   let pokemon = await response.json();
@@ -62,19 +57,19 @@ async function loadInfo(i, nameParam, functionName) {
   let image = pokemon["sprites"]["other"]["official-artwork"]["front_default"];
   let pokemonStats = pokemon["stats"];
   let color = getBackgroundColor(category);
-  let indexInAllpokemonNames = allpokemonNames.indexOf(name);
+  let indexInAllpokemonNames = allPokemonNames.indexOf(name);
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
   functionName(indexInAllpokemonNames, color, name, category, image, pokemonStats);
 }
 
-function renderMiniCard(i, color, name, category, image, pokemonStats) {
-  document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image, pokemonStats);
+function renderMiniCard(i, color, name, category, image) {
+  document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
 }
 
-function generateMiniCard(i, color, name, category, image, pokemonStats) {
+function generateMiniCard(i, color, name, category, image) {
   return `
-  <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}', '${pokemonStats}')" class="mini_card" style="background-color: ${color};">
+  <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}')" class="mini_card" style="background-color: ${color};">
      <div class="container_name_and_category">
      <h3 id="miniCardName">${name}</h3>
        <p id="miniCardCategory">${category}</p>
@@ -128,7 +123,7 @@ function getBackgroundColor(category) {
 
 async function showPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").classList.remove("d_none");
-  await loadInfo(i, name, renderPopup);
+  await loadInfo(name, renderPopup);
   renderChart();
   disableScroll();
 }
@@ -172,7 +167,7 @@ function renderPopup(i, color, name, category, image, pokemonStats) {
 }
 
 function dontShowArrowOfFirstPokemon(name) {
-  let result = allpokemonNames.indexOf(name);
+  let result = allPokemonNames.indexOf(name);
   if (result == 0) {
     document.getElementById("back").classList.add("transparent");
     document.getElementById("back").classList.add("no_pointer");
@@ -180,8 +175,8 @@ function dontShowArrowOfFirstPokemon(name) {
 }
 
 function dontShowArrowOfLastPokemon(name) {
-  let result = allpokemonNames.indexOf(name);
-  if (result == allpokemonNames.length - 1) {
+  let result = allPokemonNames.indexOf(name);
+  if (result == allPokemonNames.length - 1) {
     document.getElementById("foreward").classList.add("transparent");
     document.getElementById("back").classList.add("no_pointer");
   }
@@ -202,19 +197,19 @@ function enableScroll() {
 
 async function showNextPokemon(name) {
   event.stopPropagation(onclick);
-  let indexOfParameterName = allpokemonNames.indexOf(name);
+  let indexOfParameterName = allPokemonNames.indexOf(name);
   let indexForNextPokemon = indexOfParameterName + 1;
-  let nextName = allpokemonNames[indexForNextPokemon];
-  await loadInfo(indexForNextPokemon, nextName, renderPopup);
+  let nextName = allPokemonNames[indexForNextPokemon];
+  await loadInfo(nextName, renderPopup);
   renderChart();
 }
 
 async function showPreviousPokemon(name) {
   event.stopPropagation(onclick);
-  let indexOfParameterName = allpokemonNames.indexOf(name);
+  let indexOfParameterName = allPokemonNames.indexOf(name);
   let indexForPreviousPokemon = indexOfParameterName - 1;
-  let previousName = allpokemonNames[indexForPreviousPokemon];
-  await loadInfo(indexForPreviousPokemon, previousName, renderPopup);
+  let previousName = allPokemonNames[indexForPreviousPokemon];
+  await loadInfo(previousName, renderPopup);
   renderChart();
 }
 
@@ -230,8 +225,8 @@ async function filterNames() {
   if (search.length >= 3) {
     document.getElementById("mainContainer").innerHTML = "";
     filteredPokemons = [];
-    for (let index = 0; index < allpokemonNames.length; index++) {
-      const pokemonName = allpokemonNames[index];
+    for (let index = 0; index < allPokemonNames.length; index++) {
+      const pokemonName = allPokemonNames[index];
       if (pokemonName.toLowerCase().includes(search)) {
         await pushFilteredNames(pokemonName);
       }
@@ -251,14 +246,10 @@ async function pushFilteredNames(pokemonName) {
 
 function loadInfoAndrenderFilteredPokemon() {
   for (let i = 0; i < filteredPokemons.length; i++) {
-    // const filteredPokemon = filteredPokemons[i];
     let name = filteredPokemons[i]["name"];
     let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
     let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
-    // let pokemonStats = filteredPokemons[i]["stats"];
     let color = getBackgroundColor(category);
-    // loadStatsNames(pokemonStats);
-    // loadStatsValue(pokemonStats);
     document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
   }
 }
