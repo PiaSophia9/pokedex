@@ -107,7 +107,7 @@ function getBackgroundColor(category) {
   } else if (category == "poison") {
     return "greenyellow";
   } else if (category == "psychic") {
-    return "#blueviolet";
+    return "blueviolet";
   } else if (category == "rock") {
     return "#413333";
   } else if (category == "steel") {
