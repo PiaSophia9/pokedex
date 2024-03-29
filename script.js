@@ -1,12 +1,13 @@
-let pokemonNames = [];
-let currentPokemon;
-let statNames = [];
-let statValues = [];
-let offset = 0;
+// let pokemonNames = [];
+// let currentPokemon;
 let allpokemonNames = [];
 let filteredPokemons = [];
 let firstIndex = -20;
 let lastIndex = 0;
+let statNames = [];
+let statValues = [];
+// let offset = 0;
+
 // let pokemonData = [];
 
 // Creat array allpokemonNames
@@ -31,7 +32,7 @@ async function pushNames(infoAllpokemons) {
   }
 }
 
-// Render 20
+// Render 20 Mini-Cards
 
 async function fetchNamesAndRenderMiniCard() {
   await fetchAndPushNames();
@@ -64,7 +65,7 @@ async function loadInfo(i, nameParam, functionName) {
   let indexInAllpokemonNames = allpokemonNames.indexOf(name);
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
-  functionName(indexInAllpokemonNames, color, name, category, image, pokemonStats); // BIG change!
+  functionName(indexInAllpokemonNames, color, name, category, image, pokemonStats);
 }
 
 function renderMiniCard(i, color, name, category, image, pokemonStats) {
@@ -83,44 +84,42 @@ function generateMiniCard(i, color, name, category, image, pokemonStats) {
    `;
 }
 
-// Mini-Cards
-
-function getBackgroundColor(currentPokemonCategory) {
-  if (currentPokemonCategory == "grass") {
+function getBackgroundColor(category) {
+  if (category == "grass") {
     return "#48D0B0";
-  } else if (currentPokemonCategory == "fire") {
+  } else if (category == "fire") {
     return "#FB6C6C";
-  } else if (currentPokemonCategory == "water") {
+  } else if (category == "water") {
     return "#58AAF6";
-  } else if (currentPokemonCategory == "bug") {
+  } else if (category == "bug") {
     return "#a55d2a";
-  } else if (currentPokemonCategory == "normal") {
+  } else if (category == "normal") {
     return "#FFD757";
-  } else if (currentPokemonCategory == "dark") {
+  } else if (category == "dark") {
     return "darkgrey";
-  } else if (currentPokemonCategory == "fairy") {
+  } else if (category == "fairy") {
     return "pink";
-  } else if (currentPokemonCategory == "dragon") {
+  } else if (category == "dragon") {
     return "darkBlue";
-  } else if (currentPokemonCategory == "flying") {
+  } else if (category == "flying") {
     return "lightblue";
-  } else if (currentPokemonCategory == "ghost") {
+  } else if (category == "ghost") {
     return "lightgrey";
-  } else if (currentPokemonCategory == "ground") {
+  } else if (category == "ground") {
     return "brown";
-  } else if (currentPokemonCategory == "ice") {
+  } else if (category == "ice") {
     return "aqua";
-  } else if (currentPokemonCategory == "poison") {
+  } else if (category == "poison") {
     return "greenyellow";
-  } else if (currentPokemonCategory == "psychic") {
+  } else if (category == "psychic") {
     return "#blueviolet";
-  } else if (currentPokemonCategory == "rock") {
+  } else if (category == "rock") {
     return "#413333";
-  } else if (currentPokemonCategory == "steel") {
+  } else if (category == "steel") {
     return "silver";
-  } else if (currentPokemonCategory == "electric") {
+  } else if (category == "electric") {
     return "#fafa74";
-  } else if (currentPokemonCategory == "fighting") {
+  } else if (category == "fighting") {
     return "#CB5F48";
   }
 }
@@ -138,7 +137,6 @@ function loadStatsNames(pokemonStats) {
   statNames = [];
   for (let i = 0; i < pokemonStats.length; i++) {
     let statName = pokemonStats[i]["stat"]["name"];
-
     statNames.push(statName);
   }
 }
@@ -147,7 +145,6 @@ function loadStatsValue(pokemonStats) {
   statValues = [];
   for (let i = 0; i < pokemonStats.length; i++) {
     let statValue = pokemonStats[i]["base_stat"];
-
     statValues.push(statValue);
   }
 }
@@ -234,30 +231,34 @@ async function filterNames() {
     document.getElementById("mainContainer").innerHTML = "";
     filteredPokemons = [];
     for (let index = 0; index < allpokemonNames.length; index++) {
-      const poki = allpokemonNames[index];
-      if (poki.toLowerCase().includes(search)) {
-        document.getElementById("mainContainer").innerHTML = "";
-        document.getElementById("sectionButton").classList.add("d_none");
-        let url = `https://pokeapi.co/api/v2/pokemon/${poki}`;
-        let response = await fetch(url);
-        let filteredPokemonJson = await response.json();
-        filteredPokemons.push(filteredPokemonJson);
+      const pokemonName = allpokemonNames[index];
+      if (pokemonName.toLowerCase().includes(search)) {
+        await pushFilteredNames(pokemonName);
       }
     }
     loadInfoAndrenderFilteredPokemon();
   }
 }
 
-async function loadInfoAndrenderFilteredPokemon() {
-  for (let i = 0; i < 10; i++) {
-    const filteredPokemon = filteredPokemons[i];
+async function pushFilteredNames(pokemonName) {
+  document.getElementById("mainContainer").innerHTML = "";
+  document.getElementById("sectionButton").classList.add("d_none");
+  let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+  let response = await fetch(url);
+  let filteredPokemonJson = await response.json();
+  filteredPokemons.push(filteredPokemonJson);
+}
+
+function loadInfoAndrenderFilteredPokemon() {
+  for (let i = 0; i < filteredPokemons.length; i++) {
+    // const filteredPokemon = filteredPokemons[i];
     let name = filteredPokemons[i]["name"];
     let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
     let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
-    let pokemonStats = filteredPokemons[i]["stats"];
+    // let pokemonStats = filteredPokemons[i]["stats"];
     let color = getBackgroundColor(category);
-    loadStatsNames(pokemonStats);
-    loadStatsValue(pokemonStats);
+    // loadStatsNames(pokemonStats);
+    // loadStatsValue(pokemonStats);
     document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
   }
 }
