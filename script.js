@@ -57,7 +57,7 @@ function generateMiniCard(i, color, name, category, image) {
   <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}')" class="mini_card" style="background-color: ${color};">
     <div class="container_name_and_category">
       <h3 id="miniCardName">${name}</h3>
-      <p id="miniCardID">${i}</p>
+      <p id="miniCardID">#${i + 1}</p>
 
       <p id="miniCardCategory">${category}</p>
      </div>
