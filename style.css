@@ -239,3 +239,7 @@ button:hover {
     height: 100vh;
   }
 }
+
+#miniCardName {
+  text-align: center;
+}

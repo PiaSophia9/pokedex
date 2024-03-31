@@ -83,9 +83,10 @@ function generateMiniCard(i, color, name, category, image) {
   return `
   <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}')" class="mini_card" style="background-color: ${color};">
      <div class="container_name_and_category">
-     <h3 id="miniCardName">${name}</h3>
+       <h3 id="miniCardName">#${i + 1} ${name}</h3>
+       
        <p id="miniCardCategory">${category}</p>
-       </div>
+     </div>
        <img id="miniCardImage" src="${image}" />
    </div>
    `;
@@ -161,7 +162,7 @@ function renderPopup(i, color, name, category, image, pokemonStats) {
   <div id="cardTopContainer" style="background-color: ${color};">
     <div class="container_arrows_and_names">
        <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
-       <h1 id="pokemonName">${name}</h1>
+       <h1 id="miniCardName">#${i + 1} ${name}</h1>
        <img id="foreward" onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
     </div>
     
@@ -265,7 +266,8 @@ function loadInfoAndrenderFilteredPokemon() {
     let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
     let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
     let color = getBackgroundColor(category);
-    document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
+    let indexInAllpokemonNames = allPokemonNames.indexOf(name);
+    document.getElementById("mainContainer").innerHTML += generateMiniCard(indexInAllpokemonNames, color, name, category, image);
     // } else {
     //   return;
     // }
