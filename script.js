@@ -1,3 +1,11 @@
+let allPokemonData = [];
+
+let allNames = [];
+let filteredNames = [];
+
+let increment = 10;
+let maxMiniCards = 0;
+
 let allPokemonNames = [];
 let filteredPokemons = [];
 let firstIndex = -20;
@@ -7,6 +15,139 @@ let statValues = [];
 let loadingInProgress = false;
 
 // Creat array allpokemonNames
+
+async function fetchAllNames() {
+  let urlAllPokemon = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+  let response = await fetch(urlAllPokemon);
+  let json = await response.json();
+  let results = json["results"];
+  for (let i = 0; i < results.length; i++) {
+    allNames.push(results[i].name);
+  }
+}
+
+function getUrlForName(name) {
+  return `https://pokeapi.co/api/v2/pokemon/${name}`;
+}
+
+function getIndexForName(name) {
+  return allNames.indexOf(name);
+}
+
+async function fetchInfoForPokemon(name) {
+  let response = await fetch(getUrlForName(name));
+  let result = await response.json();
+  return result;
+}
+
+async function getInfoForPokemon(name) {
+  if (!(name in allPokemonData)) {
+    // ! = not
+    allPokemonData[name] = await fetchInfoForPokemon(name); // funktioniert wie Array-zugriff nur mit name statt i
+  }
+  return allPokemonData[name];
+}
+
+function renderMiniCard(i, color, name, category, image) {
+  document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
+}
+
+function generateMiniCard(i, color, name, category, image) {
+  return `
+  <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}')" class="mini_card" style="background-color: ${color};">
+    <div class="container_name_and_category">
+      <h3 id="miniCardName">${name}</h3>
+      <p id="miniCardID">${i}</p>
+
+      <p id="miniCardCategory">${category}</p>
+     </div>
+       <img id="miniCardImage" src="${image}" />
+   </div>
+   `;
+}
+
+function generatePokemonMiniCard(pokemonData) {
+  let name = pokemonData.name;
+  let index = getIndexForName(name);
+  let category = pokemonData["types"]["0"]["type"]["name"];
+  let color = getBackgroundColor(category);
+  let image = pokemonData["sprites"]["other"]["official-artwork"]["front_default"];
+  return generateMiniCard(index, color, name, category, image);
+}
+
+async function generateMiniCardByIdx(idx, array) {
+  return generatePokemonMiniCard(await getInfoForPokemon(array[idx]));
+}
+
+async function generateMultipleCards(iMin, iMax, array) {
+  let html = "";
+  if (iMax > array.length) iMax = array.length;
+  for (let index = iMin; index < iMax; index++) {
+    html += generatePokemonMiniCard(await getInfoForPokemon(array[index]));
+  }
+  return html;
+}
+
+async function renderOneCard(i, array) {
+  document.getElementById("mainContainer").innerHTML += await generateMiniCardByIdx(i, array);
+}
+
+async function renderMultipleCards(iMin, iMax, atOnce, array) {
+  document.getElementById("mainContainer").innerHTML = "";
+  if (iMax > array.length) iMax = array.length;
+  if (atOnce) {
+    document.getElementById("mainContainer").innerHTML += await generateMultipleCards(iMin, iMax, array);
+  } else {
+    for (let index = iMin; index < iMax; index++) {
+      await renderOneCard(index, array);
+    }
+  }
+}
+
+async function filterNamesX() {
+  let search = document.getElementById("search").value;
+  search = search.toLowerCase();
+  if (search.length >= 3) {
+    document.getElementById("sectionButton").classList.add("d_none");
+    filteredNames = [];
+    for (let index = 0; index < allNames.length; index++) {
+      const pokemonName = allNames[index];
+      if (pokemonName.toLowerCase().includes(search)) {
+        filteredNames.push(pokemonName);
+      }
+      if (!(search == document.getElementById("search").value)) {
+        search = document.getElementById("search").value;
+        search = search.toLowerCase();
+        index = -1;
+      }
+    }
+    await renderMultipleCards(0, 10, false, filteredNames);
+  } else {
+    document.getElementById("sectionButton").classList.remove("d_none");
+    await renderMultipleCards(0, maxMiniCards, false, allNames);
+  }
+  if (!(search == document.getElementById("search").value)) {
+    filterNamesX();
+  }
+}
+
+async function renderNextMiniCards() {
+  maxMiniCards += increment;
+  renderMultipleCards(0, maxMiniCards, false, allNames);
+}
+
+async function testRender() {
+  await fetchAllNames();
+  renderNextMiniCards();
+}
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 async function fetchNamesAndRenderMiniCard() {
   await fetchAndPushNames();
@@ -79,17 +220,17 @@ function renderMiniCard(i, color, name, category, image) {
   document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
 }
 
-function generateMiniCard(i, color, name, category, image) {
-  return `
-  <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}')" class="mini_card" style="background-color: ${color};">
-     <div class="container_name_and_category">
-     <h3 id="miniCardName">${name}</h3>
-       <p id="miniCardCategory">${category}</p>
-       </div>
-       <img id="miniCardImage" src="${image}" />
-   </div>
-   `;
-}
+// function generateMiniCard(i, color, name, category, image) {
+//   return `
+//   <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}')" class="mini_card" style="background-color: ${color};">
+//      <div class="container_name_and_category">
+//      <h3 id="miniCardName">${name}</h3>
+//        <p id="miniCardCategory">${category}</p>
+//        </div>
+//        <img id="miniCardImage" src="${image}" />
+//    </div>
+//    `;
+// }
 
 function getBackgroundColor(category) {
   if (category == "grass") {
