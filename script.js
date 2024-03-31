@@ -4,6 +4,7 @@ let firstIndex = -20;
 let lastIndex = 0;
 let statNames = [];
 let statValues = [];
+let loadingInProgress = false;
 
 // Creat array allpokemonNames
 
@@ -34,11 +35,22 @@ async function pushNames(infoAllpokemons) {
 
 // Render 20 Mini-Cards
 
-function fetchInfoForNext20() {
-  firstIndex = firstIndex + 20;
-  lastIndex = lastIndex + 20;
-  let namesOfPokemonToDisplay = allPokemonNames.slice(firstIndex, lastIndex);
-  fetchInfoForNames(namesOfPokemonToDisplay);
+// function fetchInfoForNext20() {
+//   firstIndex = firstIndex + 20;
+//   lastIndex = lastIndex + 20;
+//   let namesOfPokemonToDisplay = allPokemonNames.slice(firstIndex, lastIndex);
+//   fetchInfoForNames(namesOfPokemonToDisplay);
+// }
+// Used this instead:
+async function fetchInfoForNext20() {
+  if (!loadingInProgress) {
+    loadingInProgress = true; // Ladevorgang beginnt
+    firstIndex += 20;
+    lastIndex += 20;
+    let namesOfPokemonToDisplay = allPokemonNames.slice(firstIndex, lastIndex);
+    await fetchInfoForNames(namesOfPokemonToDisplay);
+    loadingInProgress = false; // Ladevorgang abgeschlossen
+  }
 }
 
 async function fetchInfoForNames(namesOfPokemonToDisplay) {
