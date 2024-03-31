@@ -241,17 +241,21 @@ async function pushFilteredNames(pokemonName) {
   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
   let response = await fetch(url);
   let filteredPokemonJson = await response.json();
-  filteredPokemons.push(filteredPokemonJson);
+  if (filteredPokemons.length < 10) {
+    filteredPokemons.push(filteredPokemonJson);
+  }
 }
 
 function loadInfoAndrenderFilteredPokemon() {
   for (let i = 0; i < filteredPokemons.length; i++) {
-    if (i < 10) {
-      let name = filteredPokemons[i]["name"];
-      let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
-      let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
-      let color = getBackgroundColor(category);
-      document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
-    }
+    // if (i < 10) {
+    let name = filteredPokemons[i]["name"];
+    let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
+    let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
+    let color = getBackgroundColor(category);
+    document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
+    // } else {
+    //   return;
+    // }
   }
 }
