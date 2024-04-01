@@ -3,6 +3,7 @@ let filteredPokemons = [];
 let firstIndex = -20;
 let lastIndex = 0;
 let statNames = [];
+let capitalizedWords = statNames.map((word) => word.charAt(0).toUpperCase() + statNames.slice(1));
 let statValues = [];
 let loadingInProgress = false;
 
@@ -154,9 +155,9 @@ function renderPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
   <div id="cardTopContainer" style="background-color: ${color};">
     <div class="container_arrows_and_names">
-       <img class="transparent_img" src="img/icons/x.png"/>
+       <img class="transparent_img" src="img/icons/x2.png"/>
        <h1 id="miniCardName">#${i + 1}<br>${name}</h1>
-       <img class="exit" onclick="closePopup()" src="img/icons/x.png"/>
+       <img class="exit" onclick="closePopup()" src="img/icons/x2.png"/>
     </div>
     
     <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
