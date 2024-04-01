@@ -35,21 +35,14 @@ async function pushNames(infoAllpokemons) {
 
 // Render 20 Mini-Cards
 
-// function fetchInfoForNext20() {
-//   firstIndex = firstIndex + 20;
-//   lastIndex = lastIndex + 20;
-//   let namesOfPokemonToDisplay = allPokemonNames.slice(firstIndex, lastIndex);
-//   fetchInfoForNames(namesOfPokemonToDisplay);
-// }
-// Used this instead:
 async function fetchInfoForNext20() {
   if (!loadingInProgress) {
-    loadingInProgress = true; // Ladevorgang beginnt
+    loadingInProgress = true;
     firstIndex += 20;
     lastIndex += 20;
     let namesOfPokemonToDisplay = allPokemonNames.slice(firstIndex, lastIndex);
     await fetchInfoForNames(namesOfPokemonToDisplay);
-    loadingInProgress = false; // Ladevorgang abgeschlossen
+    loadingInProgress = false;
   }
 }
 
@@ -247,11 +240,6 @@ async function filterNames() {
       if (pokemonName.toLowerCase().includes(search)) {
         await pushFilteredNames(pokemonName);
       }
-      // if (!(search == document.getElementById("search").value)) {
-      //   search = document.getElementById("search").value;
-      //   search = search.toLowerCase();
-      //   index = -1;
-      // }
     }
     loadInfoAndrenderFilteredPokemon();
   }
@@ -270,15 +258,11 @@ async function pushFilteredNames(pokemonName) {
 
 function loadInfoAndrenderFilteredPokemon() {
   for (let i = 0; i < filteredPokemons.length; i++) {
-    // if (i < 10) {
     let name = filteredPokemons[i]["name"];
     let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
     let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
     let color = getBackgroundColor(category);
     let indexInAllpokemonNames = allPokemonNames.indexOf(name);
     document.getElementById("mainContainer").innerHTML += generateMiniCard(indexInAllpokemonNames, color, name, category, image);
-    // } else {
-    //   return;
-    // }
   }
 }
