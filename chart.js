@@ -24,34 +24,31 @@ function renderChart() {
       ],
     },
     options: {
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-      }, // with this you can use in your css-file how big the chart should be.
-      legend: {
-        display: false,
-      },
-      tooltips: {
-        callbacks: {
-          label: function (tooltipItem) {
-            console.log(tooltipItem);
-            return tooltipItem.yLabel;
-          },
+      plugins: {
+        legend: {
+          display: false,
         },
-      }, // should remove lable, but does not
+      },
+      responsive: true,
+      maintainAspectRatio: false,
       indexAxis: "y",
+      // scale: {
+      //   pointLabels: {
+      //     fontStyle: "bold",
+      //   },
+      // },
       scales: {
         y: {
           beginAtZero: true,
+          ticks: {mirror: true},
+        },
+        x: {
+          max: 100,
+          // ticks: {fontSize: 20},
         },
       },
     },
   });
-
-  const config = {
-    type: "bar",
-    options: {
-      indexAxis: "y",
-    },
-  };
+  Chart.defaults.font.size = 16;
+  // Chart.defaults.font.weight = 400;
 }

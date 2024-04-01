@@ -162,7 +162,7 @@ function renderPopup(i, color, name, category, image, pokemonStats) {
   <div id="cardTopContainer" style="background-color: ${color};">
     <div class="container_arrows_and_names">
        <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
-       <h1 id="miniCardName">#${i + 1} ${name}</h1>
+       <h1 id="miniCardName">#${i + 1}<br>${name}</h1>
        <img id="foreward" onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
     </div>
     
@@ -243,6 +243,11 @@ async function filterNames() {
       if (pokemonName.toLowerCase().includes(search)) {
         await pushFilteredNames(pokemonName);
       }
+      // if (!(search == document.getElementById("search").value)) {
+      //   search = document.getElementById("search").value;
+      //   search = search.toLowerCase();
+      //   index = -1;
+      // }
     }
     loadInfoAndrenderFilteredPokemon();
   }
