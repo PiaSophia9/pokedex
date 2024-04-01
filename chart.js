@@ -25,6 +25,10 @@ function renderChart() {
     },
     options: {
       plugins: {
+        title: {
+          display: true,
+          text: "Stats",
+        },
         legend: {
           display: false,
         },
@@ -32,11 +36,6 @@ function renderChart() {
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: "y",
-      // scale: {
-      //   pointLabels: {
-      //     fontStyle: "bold",
-      //   },
-      // },
       scales: {
         y: {
           beginAtZero: true,
@@ -44,11 +43,12 @@ function renderChart() {
         },
         x: {
           max: 100,
-          // ticks: {fontSize: 20},
         },
       },
     },
   });
   Chart.defaults.font.size = 16;
+  Chart.defaults.font.family = "'Verdana', 'Geneva', 'Tahoma', 'sans - serif'";
+  // Chart.defaults.font.style = "inherit";
   // Chart.defaults.font.weight = 400;
 }

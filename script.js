@@ -161,13 +161,17 @@ function renderPopup(i, color, name, category, image, pokemonStats) {
   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
   <div id="cardTopContainer" style="background-color: ${color};">
     <div class="container_arrows_and_names">
-       <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/backwards_arrow.png" alt="backwards_arrow">
+       <img class="transparent_img" src="img/icons/x.png"/>
        <h1 id="miniCardName">#${i + 1}<br>${name}</h1>
-       <img id="foreward" onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/forewards_arrow.png" alt="forewards_arrow">
+       <img class="exit" onclick="closePopup()" src="img/icons/x.png"/>
     </div>
     
     <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
-    <img id="pokemonImage" src="${image}"/>
+    <div class="image_container">
+       <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/back.png" alt="backwards_arrow">
+       <img id="pokemonImage" src="${image}"/>
+       <img id="foreward" onclick="showNextPokemon('${name}')" class="forewards_arrow" src="img/icons/next.png" alt="forewards_arrow">
+    </div>   
   </div>
   <div class="card_bottom_container">
     <div class="my_chart_container">

@@ -179,11 +179,13 @@ p {
 .backwards_arrow,
 .forewards_arrow {
   cursor: pointer;
+  width: 10%;
+  height: 40%;
 }
 
 .backwards_arrow:hover,
 .forewards_arrow:hover {
-  transform: scale(1.5);
+  transform: scale(1.2);
   transition-duration: 225ms;
   transition-timing-function: ease-in-out;
 }
@@ -245,4 +247,31 @@ button:hover {
 
 #miniCardName {
   text-align: center;
+  width: 80%;
+  /* margin-block-start: 0;
+  margin-block-end: 0; */
+}
+
+.image_container {
+  display: flex;
+  align-items: center;
+}
+
+.exit {
+  cursor: pointer;
+}
+
+.exit:hover {
+  transform: scale(1.2);
+  transition-duration: 225ms;
+  transition-timing-function: ease-in-out;
+}
+
+.transparent_img {
+  opacity: 0;
+}
+.exit,
+.transparent_img {
+  width: 80px;
+  height: 80px;
 }
