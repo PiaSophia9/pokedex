@@ -1,4 +1,5 @@
 let allPokemonNames = [];
+let detailedInfoOfDisplayedPokemon = [];
 let filteredPokemons = [];
 let firstIndex = -20;
 let lastIndex = 0;
@@ -59,6 +60,10 @@ async function loadInfo(nameParam, functionName) {
   let url = `https://pokeapi.co/api/v2/pokemon/${nameParam}`;
   let response = await fetch(url);
   let pokemon = await response.json();
+  if (detailedInfoOfDisplayedPokemon.indexOf(pokemon) == -1) {
+    detailedInfoOfDisplayedPokemon.push(pokemon);
+  }
+
   let name = pokemon["name"];
   let category = pokemon["types"]["0"]["type"]["name"];
   let category2 = seeIfSecondCategory(pokemon);
@@ -189,6 +194,7 @@ function dontShowArrowOfFirstPokemon(name) {
   if (result == 0) {
     document.getElementById("back").classList.add("transparent");
     document.getElementById("back").classList.add("no_pointer");
+    document.getElementById("back").onclick = null;
   }
 }
 
@@ -196,7 +202,8 @@ function dontShowArrowOfLastPokemon(name) {
   let result = allPokemonNames.indexOf(name);
   if (result == allPokemonNames.length - 1) {
     document.getElementById("foreward").classList.add("transparent");
-    document.getElementById("back").classList.add("no_pointer");
+    document.getElementById("foreward").classList.add("no_pointer");
+    document.getElementById("foreward").onclick = null;
   }
 }
 
@@ -250,6 +257,7 @@ async function filterNames() {
     firstIndex = -20;
     lastIndex = 0;
     fetchInfoForNext20();
+    document.getElementById("sectionButton").classList.remove("d_none");
   }
 }
 
@@ -262,9 +270,13 @@ async function searchFilteredPokemons(search) {
   }
 }
 
-async function pushFilteredNames(pokemonName) {
+function emptyMainContainerRemoveButton() {
   document.getElementById("mainContainer").innerHTML = "";
   document.getElementById("sectionButton").classList.add("d_none");
+}
+
+async function pushFilteredNames(pokemonName) {
+  emptyMainContainerRemoveButton();
   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
   let response = await fetch(url);
   let filteredPokemonJson = await response.json();

@@ -231,7 +231,7 @@ button:hover {
   align-items: center;
 }
 
-.exit {
+/* .exit {
   cursor: pointer;
 }
 
@@ -249,23 +249,7 @@ button:hover {
 .transparent_img {
   width: 80px;
   height: 80px;
-}
-
-@media (max-width: 500px) {
-  header {
-    flex-direction: column;
-    padding: 8px;
-    gap: 0;
-  }
-  .pokeball {
-    height: 56px;
-  }
-
-  .exit,
-  .transparent_img {
-    width: 10%;
-  }
-}
+} */
 
 .x {
   text-align: start;
@@ -278,4 +262,21 @@ button:hover {
   display: flex;
   width: 100%;
   margin-top: -8px;
+}
+
+@media (max-width: 520px) {
+  header {
+    flex-direction: column;
+    padding: 8px;
+    gap: 0;
+    align-items: center;
+  }
+
+  #search {
+    margin-right: 0;
+  }
+
+  .pokeball {
+    height: 56px;
+  }
 }
