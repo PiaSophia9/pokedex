@@ -60,26 +60,36 @@ async function loadInfo(nameParam, functionName) {
   let pokemon = await response.json();
   let name = pokemon["name"];
   let category = pokemon["types"]["0"]["type"]["name"];
+  let category2 = seeIfSecondCategory(pokemon);
   let image = pokemon["sprites"]["other"]["official-artwork"]["front_default"];
   let pokemonStats = pokemon["stats"];
   let color = getBackgroundColor(category);
   let indexInAllpokemonNames = allPokemonNames.indexOf(name);
   loadStatsNames(pokemonStats);
   loadStatsValue(pokemonStats);
-  functionName(indexInAllpokemonNames, color, name, category, image, pokemonStats);
+  functionName(indexInAllpokemonNames, color, name, category, image, pokemonStats, category2);
 }
 
-function renderMiniCard(i, color, name, category, image) {
-  document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image);
+function seeIfSecondCategory(pokemon) {
+  if (pokemon["types"]["1"]) {
+    let category2 = pokemon["types"]["1"]["type"]["name"];
+    return category2;
+  } else {
+    return "";
+  }
 }
 
-function generateMiniCard(i, color, name, category, image) {
+function renderMiniCard(i, color, name, category, image, pokemonStats, category2) {
+  document.getElementById("mainContainer").innerHTML += generateMiniCard(i, color, name, category, image, pokemonStats, category2);
+}
+
+function generateMiniCard(i, color, name, category, image, pokemonStats, category2) {
   return `
   <div id='miniCard${i}' onclick="showPopup('${i}', '${color}', '${name}', '${category}', '${image}')" class="mini_card" style="background-color: ${color};">
      <div class="container_name_and_category">
        <h3 id="miniCardName">#${i + 1} ${name}</h3>
-       
        <p id="miniCardCategory">${category}</p>
+       <p id="miniCardCategory">${category2}</p>
      </div>
        <img id="miniCardImage" src="${image}" />
    </div>
@@ -128,7 +138,7 @@ function getBackgroundColor(category) {
 
 // Popup
 
-async function showPopup(i, color, name, category, image, pokemonStats) {
+async function showPopup(i, color, name, category, image, pokemonStats, category2) {
   document.getElementById("popupBackground").classList.remove("d_none");
   await loadInfo(name, renderPopup);
   renderChart();
@@ -151,12 +161,12 @@ function loadStatsValue(pokemonStats) {
   }
 }
 
-function renderPopup(i, color, name, category, image, pokemonStats) {
+function renderPopup(i, color, name, category, image, pokemonStats, category2) {
   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
   <div id="cardTopContainer" style="background-color: ${color};">
     <div class="pokemon_x_container"><p class="x">X</p></div>
        <h1 id="miniCardName">#${i + 1}<br>${name}</h1>
-    <div class="pokemon_category_container"><h2 id="pokemoncategory">${category}</h2></div>
+    <div class="pokemon_category_container"><h2 id="pokemoncategory">${category} ${category2}</h2></div>
     <div class="image_container">
        <img id='back' onclick="showPreviousPokemon('${name}')" class="backwards_arrow" src="img/icons/back.png" alt="backwards_arrow">
        <img id="pokemonImage" src="${image}"/>
@@ -239,6 +249,12 @@ async function filterNames() {
       }
     }
     loadInfoAndrenderFilteredPokemon();
+  } else if (search.length === 0) {
+    // If search input is empty
+    document.getElementById("mainContainer").innerHTML = ""; // Clear the main container
+    firstIndex = -20;
+    lastIndex = 0;
+    fetchInfoForNext20(); // Display all Pokémon again
   }
 }
 
@@ -257,10 +273,12 @@ function loadInfoAndrenderFilteredPokemon() {
   for (let i = 0; i < filteredPokemons.length; i++) {
     let name = filteredPokemons[i]["name"];
     let category = filteredPokemons[i]["types"]["0"]["type"]["name"];
+    let category2 = seeIfSecondCategory(filteredPokemons[i]);
     let image = filteredPokemons[i]["sprites"]["other"]["official-artwork"]["front_default"];
     let color = getBackgroundColor(category);
     let indexInAllpokemonNames = allPokemonNames.indexOf(name);
-    document.getElementById("mainContainer").innerHTML += generateMiniCard(indexInAllpokemonNames, color, name, category, image);
+    let placeholder = 0;
+    document.getElementById("mainContainer").innerHTML += generateMiniCard(indexInAllpokemonNames, color, name, category, image, placeholder, category2);
   }
 }
 

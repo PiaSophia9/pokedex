@@ -49,6 +49,5 @@ function renderChart() {
   });
   Chart.defaults.font.size = 16;
   Chart.defaults.font.family = "'Verdana', 'Geneva', 'Tahoma', 'sans - serif'";
-  // Chart.defaults.font.style = "inherit";
-  // Chart.defaults.font.weight = 400;
+  Chart.defaults.color = "#000000";
 }
