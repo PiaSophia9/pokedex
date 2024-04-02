@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="img/pokeball.png" />
   </head>
-  <body onload="fetchNamesAndRenderMiniCard()">
+  <body onload="init()">
     <header>
       <div class="logo_and_label" onclick="window.location.reload();">
         <img class="pokeball" src="img/pokeball.png" alt="" />
@@ -15,12 +15,21 @@
       </div>
       <input id="search" type="text" placeholder="Search" />
     </header>
+    <main>
+      <div id="mainContainer"></div>
+      <div class="section_button" id="sectionButton">
+        <button type="button" onclick="fetchInfoForNext20()">Lade mehr</button>
+      </div>
+      <div id="popupBackground" onclick="closePopup()" class="card_background d_none"></div>
+    </main>
+    <footer>
+      <h2>Credits</h2>
+      <div><a target="_blank" href="https://icons8.com/icon/61/forward">Forward</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a></div>
 
-    <div id="mainContainer"></div>
-    <div class="section_button" id="sectionButton">
-      <button type="button" onclick="fetchInfoForNext20()">Lade mehr</button>
-    </div>
-    <div id="popupBackground" onclick="closePopup()" class="card_background d_none"></div>
+      <div><a target="_blank" href="https://icons8.com/icon/1806/back">Back</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a></div>
+
+      <div><a target="_blank" href="https://icons8.com/icon/45674/pokeball">Pokeball</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a></div>
+    </footer>
     <script src="chart.js"></script>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

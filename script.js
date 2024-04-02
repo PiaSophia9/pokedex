@@ -1,5 +1,4 @@
 let allPokemonNames = [];
-let detailedInfoOfDisplayedPokemon = [];
 let filteredPokemons = [];
 let firstIndex = -20;
 let lastIndex = 0;
@@ -11,7 +10,7 @@ let doneTypingInterval = 1000;
 
 // Creat array allpokemonNames
 
-async function fetchNamesAndRenderMiniCard() {
+async function init() {
   await fetchAndPushNames();
   fetchInfoForNext20();
 }
@@ -60,10 +59,6 @@ async function loadInfo(nameParam, functionName) {
   let url = `https://pokeapi.co/api/v2/pokemon/${nameParam}`;
   let response = await fetch(url);
   let pokemon = await response.json();
-  if (detailedInfoOfDisplayedPokemon.indexOf(pokemon) == -1) {
-    detailedInfoOfDisplayedPokemon.push(pokemon);
-  }
-
   let name = pokemon["name"];
   let category = pokemon["types"]["0"]["type"]["name"];
   let category2 = seeIfSecondCategory(pokemon);
@@ -248,10 +243,14 @@ async function filterNames() {
   let search = document.getElementById("search").value;
   search = search.toLowerCase();
   if (search.length >= 3) {
-    document.getElementById("mainContainer").innerHTML = "";
+    emptyMainContainerRemoveButton();
     filteredPokemons = [];
     await searchFilteredPokemons(search);
-    loadInfoAndrenderFilteredPokemon();
+    if (filteredPokemons.length == 0) {
+      renderNotFound();
+    } else {
+      loadInfoAndrenderFilteredPokemon();
+    }
   } else if (search.length === 0) {
     document.getElementById("mainContainer").innerHTML = "";
     firstIndex = -20;
@@ -259,6 +258,13 @@ async function filterNames() {
     fetchInfoForNext20();
     document.getElementById("sectionButton").classList.remove("d_none");
   }
+}
+
+function renderNotFound() {
+  let content = document.getElementById("mainContainer");
+  content.innerHTML += /*html*/ `
+      <h2 style="color: black; text-align: center;">Keine Übereinstimmung.</h2>
+  `;
 }
 
 async function searchFilteredPokemons(search) {
