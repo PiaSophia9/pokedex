@@ -3,7 +3,7 @@ let filteredPokemons = [];
 let firstIndex = -20;
 let lastIndex = 0;
 let statNames = [];
-let capitalizedWords = statNames.map((word) => word.charAt(0).toUpperCase() + statNames.slice(1));
+// let capitalizedWords = statNames.map((word) => word.charAt(0).toUpperCase() + statNames.slice(1));
 let statValues = [];
 let loadingInProgress = false;
 
@@ -267,3 +267,16 @@ function loadInfoAndrenderFilteredPokemon() {
     document.getElementById("mainContainer").innerHTML += generateMiniCard(indexInAllpokemonNames, color, name, category, image);
   }
 }
+
+// Variable, um den Timeout zu speichern
+let typingTimer;
+// Die Zeit in Millisekunden, nach der die Filterfunktion ausgeführt wird, nachdem der Benutzer aufgehört hat zu tippen
+let doneTypingInterval = 1000;
+
+// Füge einen Event-Listener zum Keyup-Ereignis des Suchfelds hinzu
+document.getElementById("search").addEventListener("keyup", function () {
+  // Bevor ein neuer Timeout gesetzt wird, lösche den alten Timeout
+  clearTimeout(typingTimer);
+  // Setze einen neuen Timeout, der die Filterfunktion nach einer bestimmten Zeit ausführt
+  typingTimer = setTimeout(filterNames, doneTypingInterval);
+});

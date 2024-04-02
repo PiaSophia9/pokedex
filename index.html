@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokedex</title>
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="img/pokeball.png" />
   </head>
@@ -15,7 +13,8 @@
         <img class="pokeball" src="img/pokeball.png" alt="" />
         <h1>Pokedex</h1>
       </div>
-      <input id="search" onkeyup="setTimeout(filterNames, 1000)" type="text" placeholder="Search" />
+      <input id="search" type="text" placeholder="Search" />
+      <!-- <input id="search" onkeyup="setTimeout(filterNames, 1000)" type="text" placeholder="Search" /> -->
     </header>
 
     <div id="mainContainer"></div>
@@ -24,5 +23,7 @@
     </div>
     <div id="popupBackground" onclick="closePopup()" class="card_background d_none"></div>
     <script src="chart.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </body>
 </html>
