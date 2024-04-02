@@ -3,9 +3,10 @@ let filteredPokemons = [];
 let firstIndex = -20;
 let lastIndex = 0;
 let statNames = [];
-// let capitalizedWords = statNames.map((word) => word.charAt(0).toUpperCase() + statNames.slice(1));
 let statValues = [];
 let loadingInProgress = false;
+let typingTimer;
+let doneTypingInterval = 1000;
 
 // Creat array allpokemonNames
 
@@ -242,19 +243,22 @@ async function filterNames() {
   if (search.length >= 3) {
     document.getElementById("mainContainer").innerHTML = "";
     filteredPokemons = [];
-    for (let index = 0; index < allPokemonNames.length; index++) {
-      const pokemonName = allPokemonNames[index];
-      if (pokemonName.toLowerCase().includes(search)) {
-        await pushFilteredNames(pokemonName);
-      }
-    }
+    await searchFilteredPokemons(search);
     loadInfoAndrenderFilteredPokemon();
   } else if (search.length === 0) {
-    // If search input is empty
-    document.getElementById("mainContainer").innerHTML = ""; // Clear the main container
+    document.getElementById("mainContainer").innerHTML = "";
     firstIndex = -20;
     lastIndex = 0;
-    fetchInfoForNext20(); // Display all Pokémon again
+    fetchInfoForNext20();
+  }
+}
+
+async function searchFilteredPokemons(search) {
+  for (let index = 0; index < allPokemonNames.length; index++) {
+    const pokemonName = allPokemonNames[index];
+    if (pokemonName.toLowerCase().includes(search)) {
+      await pushFilteredNames(pokemonName);
+    }
   }
 }
 
@@ -282,15 +286,7 @@ function loadInfoAndrenderFilteredPokemon() {
   }
 }
 
-// Variable, um den Timeout zu speichern
-let typingTimer;
-// Die Zeit in Millisekunden, nach der die Filterfunktion ausgeführt wird, nachdem der Benutzer aufgehört hat zu tippen
-let doneTypingInterval = 1000;
-
-// Füge einen Event-Listener zum Keyup-Ereignis des Suchfelds hinzu
 document.getElementById("search").addEventListener("keyup", function () {
-  // Bevor ein neuer Timeout gesetzt wird, lösche den alten Timeout
   clearTimeout(typingTimer);
-  // Setze einen neuen Timeout, der die Filterfunktion nach einer bestimmten Zeit ausführt
   typingTimer = setTimeout(filterNames, doneTypingInterval);
 });
