@@ -165,7 +165,7 @@ function loadStatsValue(pokemonStats) {
 function renderPopup(i, color, name, category, image, pokemonStats, category2) {
   document.getElementById("popupBackground").innerHTML = `<div onclick="clickOnPopupCard()" class="card">
   <div id="cardTopContainer" style="background-color: ${color};">
-    <div class="pokemon_x_container"><p class="x">X</p></div>
+    <div class="pokemon_x_container" onclick="closePopup()"><p class="x">X</p></div>
        <h1 id="miniCardName">#${i + 1}<br>${name}</h1>
     <div class="pokemon_category_container"><h2 id="pokemoncategory">${category} ${category2}</h2></div>
     <div class="image_container">
