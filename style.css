@@ -223,6 +223,7 @@ button:hover {
 #miniCardName {
   text-align: center;
   width: 80%;
+  margin-block-start: 0;
 }
 
 .image_container {
@@ -264,4 +265,16 @@ button:hover {
   .transparent_img {
     width: 10%;
   }
+}
+
+.x {
+  text-align: start;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.pokemon_x_container {
+  display: flex;
+  width: 100%;
+  margin-top: -8px;
 }
