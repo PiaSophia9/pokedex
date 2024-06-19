@@ -240,13 +240,12 @@ function clickOnPopupCard() {
 // Search
 
 async function filterNames() {
-  document.getElementById("mainContainer").innerHTML = "Pokemon are loading...";
   let search = document.getElementById("search").value;
   search = search.toLowerCase();
   if (search.length >= 3) {
-    // emptyMainContainerRemoveButton();
     filteredPokemons = [];
     await searchFilteredPokemons(search);
+    console.log(filteredPokemons);
     if (filteredPokemons.length == 0) {
       renderNotFound();
     } else {
@@ -254,7 +253,10 @@ async function filterNames() {
       loadInfoAndrenderFilteredPokemon();
     }
   } else if (search.length < 3 && search.length > 0) {
-    document.getElementById("mainContainer").innerHTML = "Please enter at least 3 characters.";
+    document.getElementById("mainContainer").innerHTML = /*html*/ `
+    <h2 style="color: black; text-align: center;">Please enter at least 3 characters.</h2>
+`;
+    document.getElementById("sectionButton").innerHTML = "";
   } else if (search.length === 0) {
     document.getElementById("mainContainer").innerHTML = "";
     firstIndex = -20;
@@ -265,8 +267,8 @@ async function filterNames() {
 }
 
 function renderNotFound() {
-  let content = document.getElementById("mainContainer");
-  content.innerHTML += /*html*/ `
+  document.getElementById("sectionButton").innerHTML = "";
+  document.getElementById("mainContainer").innerHTML = /*html*/ `
       <h2 style="color: black; text-align: center;">Keine Übereinstimmung.</h2>
   `;
 }
@@ -281,12 +283,13 @@ async function searchFilteredPokemons(search) {
 }
 
 function emptyMainContainerRemoveButton() {
-  document.getElementById("mainContainer").innerHTML = "Pokemon are loading...";
+  document.getElementById("mainContainer").innerHTML = /*html*/ `
+  <h2 style="color: black; text-align: center;">Pokemon are loading...</h2>
+`;
   document.getElementById("sectionButton").classList.add("d_none");
 }
 
 async function pushFilteredNames(pokemonName) {
-  document.getElementById("mainContainer").innerHTML = "Pokemon are loading...";
   emptyMainContainerRemoveButton();
   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
   let response = await fetch(url);

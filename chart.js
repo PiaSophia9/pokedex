@@ -7,7 +7,7 @@ function renderChart() {
       labels: statNames,
       datasets: [
         {
-          label: "Pokemon stats",
+          label: "",
           data: statValues,
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
@@ -27,7 +27,7 @@ function renderChart() {
       plugins: {
         title: {
           display: true,
-          text: "Stats",
+          text: "Pokemon Stats",
         },
         legend: {
           display: false,
