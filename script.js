@@ -240,17 +240,21 @@ function clickOnPopupCard() {
 // Search
 
 async function filterNames() {
+  document.getElementById("mainContainer").innerHTML = "Pokemon are loading...";
   let search = document.getElementById("search").value;
   search = search.toLowerCase();
   if (search.length >= 3) {
-    emptyMainContainerRemoveButton();
+    // emptyMainContainerRemoveButton();
     filteredPokemons = [];
     await searchFilteredPokemons(search);
     if (filteredPokemons.length == 0) {
       renderNotFound();
     } else {
+      document.getElementById("mainContainer").innerHTML = "";
       loadInfoAndrenderFilteredPokemon();
     }
+  } else if (search.length < 3 && search.length > 0) {
+    document.getElementById("mainContainer").innerHTML = "Please enter at least 3 characters.";
   } else if (search.length === 0) {
     document.getElementById("mainContainer").innerHTML = "";
     firstIndex = -20;
@@ -277,11 +281,12 @@ async function searchFilteredPokemons(search) {
 }
 
 function emptyMainContainerRemoveButton() {
-  document.getElementById("mainContainer").innerHTML = "";
+  document.getElementById("mainContainer").innerHTML = "Pokemon are loading...";
   document.getElementById("sectionButton").classList.add("d_none");
 }
 
 async function pushFilteredNames(pokemonName) {
+  document.getElementById("mainContainer").innerHTML = "Pokemon are loading...";
   emptyMainContainerRemoveButton();
   let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
   let response = await fetch(url);
